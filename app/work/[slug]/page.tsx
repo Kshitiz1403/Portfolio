@@ -27,24 +27,24 @@ export default async function WorkPage({ params }: { params: { slug: string } })
       <div>
         <Link
           href="/#experience"
-          className="text-xs text-zinc-700 hover:text-zinc-400 transition-colors duration-200 mb-12 block"
+          className="text-xs text-stone-400 dark:text-zinc-700 hover:text-stone-600 dark:hover:text-zinc-400 transition-colors duration-200 mb-12 block"
         >
           ← back
         </Link>
 
         <header className="mb-12">
-          <p className="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-4">
+          <p className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-4">
             FinBox · {meta.period}
           </p>
-          <h1 className="text-xl font-semibold text-zinc-50 mb-3 leading-snug tracking-tight">
+          <h1 className="text-xl font-semibold text-stone-900 dark:text-zinc-50 mb-3 leading-snug tracking-tight">
             {meta.title}
           </h1>
-          <p className="text-sm text-zinc-500 mb-6">{meta.description}</p>
+          <p className="text-sm text-stone-500 dark:text-zinc-500 mb-6">{meta.description}</p>
           <div className="flex flex-wrap gap-2">
             {meta.tech.map((t) => (
               <span
                 key={t}
-                className="text-xs font-mono text-zinc-600 bg-zinc-900 px-2 py-0.5 rounded"
+                className="text-xs font-mono text-stone-500 dark:text-zinc-600 bg-stone-100 dark:bg-zinc-900 px-2 py-0.5 rounded"
               >
                 {t}
               </span>
@@ -52,23 +52,15 @@ export default async function WorkPage({ params }: { params: { slug: string } })
           </div>
         </header>
 
-        <article
-          className="
-            prose prose-sm prose-invert max-w-none
-            prose-headings:font-semibold prose-headings:text-zinc-100 prose-headings:tracking-tight
-            prose-h2:text-base prose-h2:mt-10 prose-h3:text-sm
-            prose-p:text-zinc-500 prose-p:leading-relaxed
-            prose-a:text-emerald-500 prose-a:no-underline hover:prose-a:text-emerald-400
-            prose-strong:text-zinc-300 prose-strong:font-medium
-            prose-code:text-emerald-400 prose-code:bg-zinc-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
-            prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-zinc-800 prose-pre:rounded-lg
-            prose-blockquote:border-l-emerald-500 prose-blockquote:text-zinc-600 prose-blockquote:not-italic
-            prose-hr:border-zinc-900
-            prose-li:text-zinc-500
-            prose-ul:text-zinc-500
-            prose-ol:text-zinc-500
-          "
-        >
+        <article className="prose prose-sm max-w-none
+          prose-headings:font-semibold prose-headings:tracking-tight
+          prose-h2:text-base prose-h2:mt-10 prose-h3:text-sm
+          prose-p:leading-relaxed
+          prose-a:no-underline
+          prose-code:text-xs prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
+          prose-pre:rounded-lg
+          prose-blockquote:not-italic
+        ">
           <MDXRemote source={content} />
         </article>
       </div>

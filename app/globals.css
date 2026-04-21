@@ -8,7 +8,77 @@
   }
 
   ::selection {
+    background-color: rgb(5 150 105 / 0.12);
+    color: #1c1917;
+  }
+
+  .dark ::selection {
     background-color: rgb(52 211 153 / 0.15);
     color: #f4f4f5;
+  }
+
+  /* Prose color theming via CSS custom properties */
+  .prose {
+    --tw-prose-body: theme('colors.stone.500');
+    --tw-prose-headings: theme('colors.stone.800');
+    --tw-prose-links: theme('colors.emerald.700');
+    --tw-prose-bold: theme('colors.stone.700');
+    --tw-prose-counters: theme('colors.stone.400');
+    --tw-prose-bullets: theme('colors.stone.400');
+    --tw-prose-hr: theme('colors.stone.200');
+    --tw-prose-quotes: theme('colors.stone.400');
+    --tw-prose-quote-borders: theme('colors.emerald.600');
+    --tw-prose-code: theme('colors.emerald.700');
+    --tw-prose-pre-code: theme('colors.stone.700');
+    --tw-prose-pre-bg: theme('colors.stone.100');
+    --tw-prose-th-borders: theme('colors.stone.200');
+    --tw-prose-td-borders: theme('colors.stone.100');
+  }
+
+  .dark .prose {
+    --tw-prose-body: theme('colors.zinc.500');
+    --tw-prose-headings: theme('colors.zinc.100');
+    --tw-prose-links: theme('colors.emerald.500');
+    --tw-prose-bold: theme('colors.zinc.300');
+    --tw-prose-counters: theme('colors.zinc.500');
+    --tw-prose-bullets: theme('colors.zinc.600');
+    --tw-prose-hr: theme('colors.zinc.900');
+    --tw-prose-quotes: theme('colors.zinc.600');
+    --tw-prose-quote-borders: theme('colors.emerald.500');
+    --tw-prose-code: theme('colors.emerald.400');
+    --tw-prose-pre-code: theme('colors.zinc.300');
+    --tw-prose-pre-bg: theme('colors.zinc.900');
+    --tw-prose-th-borders: theme('colors.zinc.700');
+    --tw-prose-td-borders: theme('colors.zinc.800');
+  }
+
+  /* Inline code background (not in CSS variable set) */
+  .prose :where(code):not(:where([class~="not-prose"] *)):not(pre code) {
+    background-color: theme('colors.stone.100');
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.375rem;
+  }
+
+  .dark .prose :where(code):not(:where([class~="not-prose"] *)):not(pre code) {
+    background-color: theme('colors.zinc.900');
+  }
+
+  /* Pre block border */
+  .prose :where(pre):not(:where([class~="not-prose"] *)) {
+    border: 1px solid theme('colors.stone.200');
+    border-radius: 0.5rem;
+  }
+
+  .dark .prose :where(pre):not(:where([class~="not-prose"] *)) {
+    border-color: theme('colors.zinc.800');
+  }
+
+  /* Link hover */
+  .prose :where(a):not(:where([class~="not-prose"] *)):hover {
+    color: theme('colors.emerald.600');
+  }
+
+  .dark .prose :where(a):not(:where([class~="not-prose"] *)):hover {
+    color: theme('colors.emerald.400');
   }
 }

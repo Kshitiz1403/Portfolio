@@ -100,13 +100,13 @@ export default function Home() {
     <div className="space-y-20">
       {/* Hero */}
       <section>
-        <h1 className="text-2xl font-semibold text-zinc-50 mb-2 tracking-tight">
+        <h1 className="text-2xl font-semibold text-stone-900 dark:text-zinc-50 mb-2 tracking-tight">
           Kshitiz Agrawal
         </h1>
-        <p className="text-zinc-500 mb-6 text-sm font-mono">
+        <p className="text-stone-500 dark:text-zinc-500 mb-6 text-sm font-mono">
           Backend engineer · Distributed systems · Bengaluru, India
         </p>
-        <p className="text-zinc-400 leading-relaxed mb-8 text-sm">
+        <p className="text-stone-600 dark:text-zinc-400 leading-relaxed mb-8 text-sm">
           Building reliable infrastructure at FinBox — internal proxies, workflow engines, webhook
           platforms. Interested in how systems fail and how to make them not.
         </p>
@@ -115,7 +115,7 @@ export default function Home() {
             href="https://github.com/Kshitiz1403"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-zinc-500 hover:text-emerald-400 transition-colors duration-200"
+            className="text-stone-500 dark:text-zinc-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors duration-200"
           >
             GitHub
           </a>
@@ -123,19 +123,19 @@ export default function Home() {
             href="https://linkedin.com/in/kshitizagrawal"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-zinc-500 hover:text-emerald-400 transition-colors duration-200"
+            className="text-stone-500 dark:text-zinc-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors duration-200"
           >
             LinkedIn
           </a>
           <a
             href="mailto:kshitizagrawal@outlook.com"
-            className="text-zinc-500 hover:text-emerald-400 transition-colors duration-200"
+            className="text-stone-500 dark:text-zinc-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors duration-200"
           >
             Email
           </a>
           <a
             href="/resume"
-            className="text-zinc-500 hover:text-emerald-400 transition-colors duration-200"
+            className="text-stone-500 dark:text-zinc-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors duration-200"
           >
             Resume
           </a>
@@ -144,18 +144,18 @@ export default function Home() {
 
       {/* Experience */}
       <section>
-        <h2 className="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-8">
+        <h2 className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-8">
           Experience
         </h2>
         {experience.map((job) => (
           <div key={job.company}>
             <div className="flex items-baseline justify-between mb-8">
               <div className="flex items-baseline gap-2">
-                <span className="font-medium text-zinc-100">{job.company}</span>
-                <span className="text-zinc-600 text-sm">·</span>
-                <span className="text-zinc-500 text-sm">{job.role}</span>
+                <span className="font-medium text-stone-800 dark:text-zinc-100">{job.company}</span>
+                <span className="text-stone-400 dark:text-zinc-600 text-sm">·</span>
+                <span className="text-stone-500 dark:text-zinc-500 text-sm">{job.role}</span>
               </div>
-              <span className="text-xs text-zinc-700 font-mono shrink-0 ml-4">
+              <span className="text-xs text-stone-400 dark:text-zinc-700 font-mono shrink-0 ml-4">
                 {job.location} · {job.period}
               </span>
             </div>
@@ -164,16 +164,16 @@ export default function Home() {
                 <div key={project.name}>
                   <Link
                     href={`/work/${project.slug}`}
-                    className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-zinc-300 hover:text-zinc-50 transition-colors duration-200 mb-1.5"
+                    className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200 mb-1.5"
                   >
                     {project.name}
-                    <span className="text-zinc-700 group-hover/link:text-emerald-500 transition-colors duration-200 text-xs">↗</span>
+                    <span className="text-stone-400 dark:text-zinc-700 group-hover/link:text-emerald-700 dark:group-hover/link:text-emerald-500 transition-colors duration-200 text-xs">↗</span>
                   </Link>
-                  <p className="text-sm text-zinc-600 leading-relaxed mb-3">{project.description}</p>
+                  <p className="text-sm text-stone-500 dark:text-zinc-600 leading-relaxed mb-3">{project.description}</p>
                   <ul className="space-y-1.5 mb-3">
                     {project.highlights.map((point, i) => (
-                      <li key={i} className="flex gap-2 text-sm text-zinc-600 leading-relaxed">
-                        <span className="text-zinc-700 shrink-0 select-none mt-px">—</span>
+                      <li key={i} className="flex gap-2 text-sm text-stone-500 dark:text-zinc-600 leading-relaxed">
+                        <span className="text-stone-300 dark:text-zinc-700 shrink-0 select-none mt-px">—</span>
                         <span>{point}</span>
                       </li>
                     ))}
@@ -182,7 +182,7 @@ export default function Home() {
                     {project.tech.map((t) => (
                       <span
                         key={t}
-                        className="text-xs font-mono text-zinc-600 bg-zinc-900 px-2 py-0.5 rounded"
+                        className="text-xs font-mono text-stone-500 dark:text-zinc-600 bg-stone-100 dark:bg-zinc-900 px-2 py-0.5 rounded"
                       >
                         {t}
                       </span>
@@ -197,19 +197,19 @@ export default function Home() {
 
       {/* Projects */}
       <section>
-        <h2 className="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-8">
+        <h2 className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-8">
           Projects
         </h2>
         <div className="space-y-8">
           {projects.map((project) => (
             <div key={project.name}>
               <div className="flex items-baseline justify-between mb-2">
-                <span className="font-medium text-zinc-200">{project.name}</span>
-                <span className="text-xs text-zinc-700 font-mono ml-4 shrink-0">
+                <span className="font-medium text-stone-800 dark:text-zinc-200">{project.name}</span>
+                <span className="text-xs text-stone-400 dark:text-zinc-700 font-mono ml-4 shrink-0">
                   {project.period}
                 </span>
               </div>
-              <p className="text-sm text-zinc-600 leading-relaxed mb-3">{project.description}</p>
+              <p className="text-sm text-stone-500 dark:text-zinc-600 leading-relaxed mb-3">{project.description}</p>
               <div className="flex items-center gap-4 mb-3">
                 {project.links.map((link) => (
                   <a
@@ -217,7 +217,7 @@ export default function Home() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-emerald-500 hover:text-emerald-400 transition-colors duration-200"
+                    className="text-xs text-emerald-700 dark:text-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-200"
                   >
                     {link.label} ↗
                   </a>
@@ -227,7 +227,7 @@ export default function Home() {
                 {project.tech.map((t) => (
                   <span
                     key={t}
-                    className="text-xs font-mono text-zinc-600 bg-zinc-900 px-2 py-0.5 rounded"
+                    className="text-xs font-mono text-stone-500 dark:text-zinc-600 bg-stone-100 dark:bg-zinc-900 px-2 py-0.5 rounded"
                   >
                     {t}
                   </span>
@@ -240,14 +240,14 @@ export default function Home() {
 
       {/* Skills */}
       <section>
-        <h2 className="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-8">
+        <h2 className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-8">
           Skills
         </h2>
         <div className="space-y-3">
           {Object.entries(skills).map(([category, items]) => (
             <div key={category} className="flex gap-6">
-              <span className="text-xs text-zinc-700 w-32 shrink-0 pt-0.5">{category}</span>
-              <p className="text-xs font-mono text-zinc-500 leading-relaxed">
+              <span className="text-xs text-stone-400 dark:text-zinc-700 w-32 shrink-0 pt-0.5">{category}</span>
+              <p className="text-xs font-mono text-stone-500 dark:text-zinc-500 leading-relaxed">
                 {items.join(' · ')}
               </p>
             </div>

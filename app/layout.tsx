@@ -26,7 +26,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
-      <body className="bg-zinc-950 text-zinc-100 antialiased font-sans">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+          }}
+        />
+      </head>
+      <body className="bg-[#faf8f5] dark:bg-zinc-950 text-stone-900 dark:text-zinc-100 antialiased font-sans transition-colors duration-200">
         <div className="mx-auto max-w-2xl px-6 py-16">
           <Nav />
           <main>{children}</main>
