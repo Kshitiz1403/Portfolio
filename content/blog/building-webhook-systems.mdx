@@ -1,0 +1,54 @@
+---
+title: "Building a Reliable Webhook Delivery System"
+date: "2024-06-15"
+description: "What I learned building Firefly — a multi-tenant webhook platform — and why at-least-once delivery is harder than it sounds."
+tags: ["distributed systems", "go"]
+---
+
+Webhooks are deceptively simple in theory: your service makes an HTTP POST to someone else's URL. In practice, building a reliable webhook delivery system that handles failures gracefully, scales across tenants, and doesn't lose events is a genuinely hard problem.
+
+I ran into this at FinBox. We had webhooks scattered across multiple services — each implementing its own retry logic, each with its own failure modes. The result was inconsistency, missed events, and engineers debugging webhook issues in production more often than anyone wanted.
+
+So I built Firefly.
+
+## The core problem
+
+The fundamental challenge with webhooks is **at-least-once delivery**. The recipient might be down. Their server might respond with a 500. The network might drop the request mid-flight. Your service needs to retry — but retrying introduces new problems: duplicate events, ordering issues, backpressure.
+
+Getting this right requires thinking about a few things.
+
+### Idempotency belongs to the receiver
+
+Your webhook system can guarantee delivery. It cannot guarantee idempotency — that's the receiver's responsibility. Document this clearly. Include a stable `event_id` in every payload so receivers can deduplicate if needed.
+
+### Retry strategies matter more than you think
+
+Exponential backoff with jitter is the standard for a reason. Linear retries hammer a struggling endpoint. Pure exponential without jitter causes thundering herds when multiple events fail simultaneously and then retry in sync.
+
+```
+delay = baseDelay * 2^attempt + random(0, baseDelay)
+```
+
+Set a cap on retries. After N failures, move the event to a dead letter queue rather than retrying indefinitely. Infinite retries are just a slow memory leak with extra steps.
+
+### Dead letter queues are not optional
+
+Every webhook system needs a DLQ. Operators need to inspect failed events, understand why they failed, and replay them after the downstream issue is resolved. If you can't replay from the DLQ, you will lose events — it's only a matter of when.
+
+## The multi-tenancy problem
+
+When multiple tenants share the same webhook infrastructure, noisy neighbors become a real concern. One tenant sending 10,000 events shouldn't starve another tenant's time-sensitive deliveries.
+
+We solved this with per-tenant queues and configurable rate limits. SQS made this straightforward — each tenant gets an isolated queue, and consumption doesn't bleed across tenants.
+
+The tradeoff is cost and operational overhead as tenant count grows. Worth it at our scale; might not be at yours.
+
+## What I'd do differently
+
+**Observability from day one.** We instrumented Firefly with OpenTelemetry from the start, but I still underestimated how much visibility matters in a delivery system. Queue depth, delivery latency per tenant, failure rates by endpoint — add these metrics before you need them in an incident.
+
+**Version your event schema early.** Webhook payloads evolve as your product does. Adding versioning retroactively, when consumers are already in production and expect a specific shape, is painful. Start with a `version` field in every payload, even if you never use it.
+
+---
+
+Building Firefly clarified something for me: infrastructure components look boring from the outside but contain most of the interesting engineering problems. Reliability, consistency, and fault tolerance don't show up in feature demos. They show up at 3am when something breaks.
