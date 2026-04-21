@@ -19,21 +19,21 @@ Multi-tenancy added another dimension. FinBox serves multiple business tenants, 
 
 Pickle is a standalone gRPC microservice that owns configuration management for the entire platform. Every service that previously read config from the monolith now calls Pickle instead.
 
-The core data model is built around **namespaces** — a scoped container for configuration. Isolation happens at the namespace level, which means Pickle serves two distinct use cases simultaneously: multi-tenant isolation (different business tenants owning separate namespaces) and microservice isolation (different internal services each owning their own namespace with no risk of cross-contamination). Any service in the platform can adopt Pickle and get its own isolated config space without any coordination with other services.
+The core data model is built around **namespaces** — a scoped container for configuration. Isolation happens at the namespace level, which means Pickle serves **two distinct use cases simultaneously**: **multi-tenant isolation** (different business tenants owning separate namespaces) and **microservice isolation** (different internal services each owning their own namespace with no risk of cross-contamination). Any service in the platform can adopt Pickle and get its own isolated config space **without any coordination with other services**.
 
-Every config value has a full version history. You can see what a value was at any point in time, who changed it, and why. Rollback is a first-class operation.
+Every config value has a **full version history**. You can see what a value was at any point in time, who changed it, and why. **Rollback is a first-class operation.**
 
 ## Scheduled activation
 
-One of the features that immediately proved its value was scheduled activation. Teams can stage a config change — "set this value to X at 2024-03-15 09:00 IST" — and Pickle handles the timing. No cron jobs, no remembering to make the change manually, no risk of a time-zone mistake.
+One of the features that immediately proved its value was **scheduled activation**. Teams can stage a config change and Pickle handles the timing. No cron jobs, no remembering to make the change manually, no risk of a time-zone mistake.
 
-This was especially useful for vendor onboarding: activating a new payment provider during a low-traffic window with zero human intervention on the day.
+This was especially useful for **vendor onboarding**: activating a new payment provider during a low-traffic window with **zero human intervention** on the day.
 
 ## RBAC
 
 Configuration changes in a financial platform need strict access control. Pickle implements hierarchical role-based access control with roles scoped to namespaces.
 
-The hierarchy: a role defined at a parent namespace is inherited by child namespaces, but can be overridden. This mirrors the tenant structure without requiring duplicate role definitions. Every change is logged with actor, timestamp, and the before/after values — a full audit trail for compliance.
+The hierarchy: a role defined at a parent namespace is **inherited by child namespaces**, but can be overridden. This mirrors the tenant structure without requiring duplicate role definitions. Every change is logged with actor, timestamp, and the before/after values — a **full audit trail for compliance**.
 
 ## Pickleboard
 

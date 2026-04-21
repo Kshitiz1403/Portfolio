@@ -11,25 +11,25 @@ Octopus is the answer to that problem.
 
 ## What it is
 
-Octopus is an internal HTTP proxy that sits between FinBox services and their external vendors. Every outbound call routes through it. The proxy handles the concerns that used to be scattered — encryption, authentication, webhook verification, routing, retry — in one place.
+Octopus is an **internal HTTP proxy** that sits between FinBox services and their external vendors. Every outbound call routes through it. The proxy handles the concerns that used to be scattered — **encryption, authentication, webhook verification, routing, retry** — in one place.
 
-The key design decision was to make the proxy configuration **declarative**. Rather than hardcoding vendor-specific logic into the proxy itself, we built a custom DSL that lets teams describe what they need:
+The key design decision was to make the proxy configuration **declarative**. Rather than hardcoding vendor-specific logic into the proxy itself, we built a custom DSL that lets teams describe what they need.
 
-This separation — routing logic in config, execution in the proxy — means adding a new vendor or changing an auth flow doesn't require a code deploy.
+This separation — **routing logic in config, execution in the proxy** — means adding a new vendor or changing an auth flow **doesn't require a code deploy**.
 
 ## Adaptive vendor selection (Vendor Switch)
 
 One of the more interesting problems was vendor selection. FinBox uses multiple providers for some services, and the best provider at any given moment depends on real-time factors: latency, error rate, success rate in the last N minutes.
 
-We built a scoring algorithm that continuously aggregates performance metrics per vendor and routes new requests to the highest-scoring one. When a vendor's score drops below a threshold, it gets automatically deprioritized. When it recovers, it's brought back into rotation.
+We built a **scoring algorithm** that continuously aggregates performance metrics per vendor and routes new requests to the highest-scoring one. When a vendor's score drops below a threshold, it gets **automatically deprioritized**. When it recovers, it's brought back into rotation.
 
-The failover mechanism is deterministic from the config perspective — teams declare `on_failure fallback <vendor>` — but the scoring system means the "primary" vendor is always the currently best-performing one.
+The failover mechanism is **deterministic from the config perspective** — but the scoring system means the "primary" vendor is always the **currently best-performing one**.
 
 ## Custom code execution
 
-Some business logic doesn't fit cleanly into declarative config. For those cases, Octopus supports custom code plugins using Go's native plugin system. Teams can write Go code that gets loaded at runtime and executed in isolation — no separate containers, no gRPC calls, no serialization overhead.
+Some business logic doesn't fit cleanly into declarative config. For those cases, Octopus supports **custom code plugins** using Go's native plugin system. Teams can write Go code that gets **loaded at runtime and executed in isolation** — no separate containers, no serialization overhead.
 
-This was a deliberate tradeoff. The plugin approach is less isolated than a container, but for the class of logic we needed (data transformation, conditional routing), the performance profile was much better.
+This was a deliberate tradeoff. The plugin approach is less isolated than a container, but for the class of logic we needed (data transformation, conditional routing), the **performance profile was much better**.
 
 ## OctoDash
 
@@ -43,7 +43,7 @@ The frontend is React.
 
 Octopus is also the origin of [DataDancer](/work/datadancer). As the proxy grew more capable, so did the complexity of the transformation logic inside it — conditional routing, data reshaping between vendor calls, error handling with fallback paths. We kept iterating on the custom DSL to handle these cases, adding layer after layer.
 
-At some point it became clear that what we were building inside Octopus was a general-purpose workflow engine. That logic was extracted, formalized against the Serverless Workflow Specification, and became DataDancer. The custom DSL was gradually replaced by standard workflow definitions, and the proxy got simpler as a result.
+At some point it became clear that what we were building inside Octopus was a **general-purpose workflow engine**. That logic was extracted, formalized against the Serverless Workflow Specification, and became DataDancer. The custom DSL was **gradually replaced by standard workflow definitions**, and the proxy got simpler as a result.
 
 ---
 

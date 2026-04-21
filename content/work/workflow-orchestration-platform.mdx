@@ -7,7 +7,7 @@ tech: ["Go", "Temporal", "Serverless Workflow"]
 
 Business processes at a fintech company are complex and change constantly. A loan application moves through credit scoring, document verification, underwriting rules, disbursement checks, and notification steps. The logic evolves — new regulatory requirements, new vendor integrations, edge cases discovered in production. Before this platform, every change meant a developer writing code, a code review, a deployment. Non-technical teams could describe what they wanted but had no path to implement it without engineering involvement.
 
-The Workflow Orchestration Platform is one of the most important pieces of technology at FinBox. I am the core developer on this project.
+The Workflow Orchestration Platform is **one of the most important pieces of technology at FinBox**. I am the **core developer** on this project.
 
 ## The approach
 
@@ -23,9 +23,9 @@ The platform connects them: it parses a workflow definition, maps each state to 
 
 The most visible outcome of this platform is a product built on top of it: a visual canvas for non-developers.
 
-Operations teams, product managers, and business analysts open the canvas and see a library of readily available activities — call this API, apply this rule, send this notification, run this check. They drag activities onto the canvas and stitch them together into a workflow. No code, no deployments, no engineering involvement. When the workflow is ready, they publish it and it executes on the orchestration platform with full Temporal durability underneath.
+Operations teams, product managers, and business analysts open the canvas and see a library of readily available activities — call this API, apply this rule, send this notification, run this check. They **drag activities onto the canvas and stitch them together** into a workflow. **No code, no deployments, no engineering involvement.** When the workflow is ready, they publish it and it executes on the orchestration platform with full Temporal durability underneath.
 
-Adding a new activity to the library requires engineering. Composing existing activities into new workflows — or modifying existing ones — does not. This is the separation that makes the system genuinely useful: engineers define what's possible, and business teams define what actually runs.
+Adding a new activity to the library requires engineering. **Composing existing activities into new workflows — or modifying existing ones — does not.** This is the separation that makes the system genuinely useful: engineers define what's possible, and business teams define what actually runs.
 
 ## Spec compliance and open source
 
@@ -35,9 +35,9 @@ I maintain the Serverless Workflow Editor at FinBox and actively contribute to t
 
 ## The hard parts
 
-The most interesting engineering challenge was mapping the Serverless Workflow spec's execution model cleanly onto Temporal's. They're not identical — the spec has concepts like event-based transitions, parallel state execution, and compensation flows that require careful translation into Temporal's workflow and activity primitives.
+The most interesting engineering challenge was **mapping the Serverless Workflow spec's execution model cleanly onto Temporal's**. They're not identical — the spec has concepts like event-based transitions, parallel state execution, and compensation flows that require careful translation into Temporal's workflow and activity primitives.
 
-The second challenge was error semantics. The spec has a defined error handling model. Temporal has its own retry and error propagation model. Getting them to compose correctly — so that a workflow definition's error handling behavior is what actually executes — required working through a lot of edge cases.
+The second challenge was **error semantics**. The spec has a defined error handling model. Temporal has its own retry and error propagation model. Getting them to compose correctly — so that a workflow definition's error handling behavior is what actually executes — required working through a lot of edge cases.
 
 ## Relationship to DataDancer
 

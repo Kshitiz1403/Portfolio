@@ -7,15 +7,15 @@ tech: ["Go", "Serverless Workflow", "JQ", "OpenTelemetry"]
 
 FinBox runs a lot of short-lived data transformation workflows. An event comes in, gets validated, enriched from a few sources, transformed into a target shape, and forwarded downstream. These aren't long-running processes — they complete in milliseconds to seconds.
 
-The natural instinct is to reach for Temporal. But Temporal is designed for durable, long-running workflows that need to survive process restarts. For short-running in-memory work, it introduces unnecessary overhead: a separate Temporal server, worker processes, workflow history serialization. For a workflow that runs in 50ms, that's a lot of infrastructure to maintain and that infrastructure cost isn't justified.
+The natural instinct is to reach for Temporal. But Temporal is designed for **durable, long-running workflows** that need to survive process restarts. For **short-running in-memory work**, it introduces unnecessary overhead: a separate Temporal server, worker processes, workflow history serialization. For a workflow that runs in 50ms, that infrastructure cost isn't justified.
 
 DataDancer was built to fill that gap.
 
 ## What it is
 
-DataDancer is a Go library that implements the [Serverless Workflow Specification](https://serverlessworkflow.io/) for in-memory execution. Workflows are defined in JSON following the open standard — no custom DSL, no proprietary format. The engine executes them entirely in-process with zero external dependencies.
+DataDancer is a **Go library** that implements the [Serverless Workflow Specification](https://serverlessworkflow.io/) for **in-memory execution**. Workflows are defined in JSON following the open standard — no custom DSL, no proprietary format. The engine executes them entirely **in-process with zero external dependencies**.
 
-The workflow model is built around three state types: operation states that execute activities in sequence, switch states that branch on conditions evaluated against the current data, and sleep states for timed pauses. These three primitives cover the vast majority of real data processing workflows.
+The workflow model is built around three state types: **operation** states that execute activities in sequence, **switch** states that branch on conditions evaluated against the current data, and **sleep** states for timed pauses. These three primitives cover the vast majority of real data processing workflows.
 
 This workflow runs entirely in-process. If the process dies, the workflow doesn't resume — but for the class of short-running work we're targeting, that's the right tradeoff.
 
@@ -23,11 +23,11 @@ This workflow runs entirely in-process. If the process dies, the workflow doesn'
 
 A significant part of the work was building the transformation layer. Real-world workflows don't just call functions in sequence — they need to reshape data between steps: extract fields, rename keys, compute derived values, filter arrays.
 
-DataDancer includes a config-driven JSON transformation engine that handles this declaratively. You describe the transformation in the workflow definition, and the engine applies it without custom code. For more complex cases, the spec supports custom function activities that DataDancer can invoke directly.
+DataDancer includes a **config-driven JSON transformation engine** that handles this declaratively. You describe the transformation in the workflow definition, and the engine applies it without custom code. For more complex cases, the spec supports custom function activities that DataDancer can invoke directly.
 
-DataDancer ships a standard library of built-in activities covering the most common operations: data transformation via JQ, HTTP requests to external services, encryption and decryption, and format conversion utilities for HTML and XML.
+DataDancer ships a **standard library of built-in activities** covering the most common operations: data transformation via JQ, HTTP requests to external services, encryption and decryption, and format conversion utilities for HTML and XML.
 
-Custom activities are registered through a simple Go interface. Any method on a registered struct becomes callable by name from a workflow definition.
+Custom activities are registered through a simple Go interface. Any method on a registered struct becomes **callable by name** from a workflow definition.
 
 ## Extensibility
 
@@ -43,7 +43,7 @@ None of these are required. A service that just wants basic workflow execution a
 
 ## Serverless Workflow spec compliance
 
-Implementing a spec rather than building a proprietary engine was a deliberate choice. The Serverless Workflow Specification is an open standard with broad industry support. Building against it means workflows are portable, tooling exists, and the mental model is shareable.
+Implementing a spec rather than building a proprietary engine was a **deliberate choice**. The Serverless Workflow Specification is an **open standard** with broad industry support. Building against it means workflows are portable, tooling exists, and the mental model is shareable.
 
 The spec covers more than DataDancer currently implements — durable execution, event-driven triggers, compensation flows. We've scoped to what short-running in-memory execution needs. The spec's design made it possible to implement a strict subset without compromising correctness.
 
