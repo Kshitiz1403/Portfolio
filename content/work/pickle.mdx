@@ -19,7 +19,7 @@ Multi-tenancy added another dimension. FinBox serves multiple business tenants, 
 
 Pickle is a standalone gRPC microservice that owns configuration management for the entire platform. Every service that previously read config from the monolith now calls Pickle instead.
 
-The core data model is built around **namespaces** — a namespace is a tenant-scoped container for configuration. Services read config from their namespace. Tenants cannot read each other's namespaces. This isolation is enforced at the service level, not the application level.
+The core data model is built around **namespaces** — a scoped container for configuration. Isolation happens at the namespace level, which means Pickle serves two distinct use cases simultaneously: multi-tenant isolation (different business tenants owning separate namespaces) and microservice isolation (different internal services each owning their own namespace with no risk of cross-contamination). Any service in the platform can adopt Pickle and get its own isolated config space without any coordination with other services.
 
 Every config value has a full version history. You can see what a value was at any point in time, who changed it, and why. Rollback is a first-class operation.
 
@@ -35,9 +35,9 @@ Configuration changes in a financial platform need strict access control. Pickle
 
 The hierarchy: a role defined at a parent namespace is inherited by child namespaces, but can be overridden. This mirrors the tenant structure without requiring duplicate role definitions. Every change is logged with actor, timestamp, and the before/after values — a full audit trail for compliance.
 
-## OctoDash integration
+## Pickleboard
 
-Config management without a UI is only useful to engineers. We built a React frontend (part of the OctoDash system) that exposes config versioning, namespace management, and scheduling to non-engineering users. Operators can schedule activations, review history, and roll back changes without touching an API.
+Config management without a UI is only useful to engineers. Pickleboard is the React frontend built alongside Pickle, exposing config versioning, namespace management, and scheduling to non-engineering users. Operators can schedule activations, review history, and roll back changes without touching an API.
 
 ## Infrastructure
 

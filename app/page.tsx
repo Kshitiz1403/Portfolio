@@ -48,8 +48,8 @@ const experience = [
         description:
           'gRPC microservice extracted from a legacy monolith to own configuration management across all tenants.',
         highlights: [
-          'Extracted config management from a monolith into a **gRPC microservice** with version control and **hierarchical RBAC**',
-          '**Multi-tenant namespace isolation** with scheduled activation and a full audit log',
+          '**Namespace-scoped isolation** lets each microservice own its config independently — zero coordination required between services',
+          '**gRPC microservice** with version control, scheduled activation, hierarchical RBAC, and a full audit log',
         ],
         tech: ['Go', 'gRPC', 'React', 'Terraform', 'Helm', 'PostgreSQL'],
       },
