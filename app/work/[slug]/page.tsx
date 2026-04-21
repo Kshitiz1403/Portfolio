@@ -7,9 +7,10 @@ export async function generateStaticParams() {
   return getAllWorkSlugs().map((slug) => ({ slug }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
-    const { meta } = getWork(params.slug)
+    const { slug } = await params
+    const { meta } = getWork(slug)
     return {
       title: `${meta.title} — Kshitiz Agrawal`,
       description: meta.description,
@@ -19,9 +20,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function WorkPage({ params }: { params: { slug: string } }) {
+export default async function WorkPage({ params }: { params: Promise<{ slug: string }> }) {
   try {
-    const { meta, content } = getWork(params.slug)
+    const { slug } = await params
+    const { meta, content } = getWork(slug)
 
     return (
       <div>
