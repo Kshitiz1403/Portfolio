@@ -211,7 +211,7 @@ export default function Home() {
             <div key={project.name}>
               <div className="flex items-baseline justify-between mb-2">
                 <Link
-                  href={`/work/${project.slug}`}
+                  href={`/projects/${project.slug}`}
                   className="group/link inline-flex items-center gap-1.5 font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200"
                 >
                   {project.name}
