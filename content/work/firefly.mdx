@@ -13,13 +13,7 @@ Firefly centralizes all of this.
 
 At-least-once delivery is the fundamental guarantee webhook systems need to make. The recipient might be down. They might return a 500. The network might drop the connection. Your system needs to retry — but retrying naively creates new problems.
 
-Firefly's retry model is configurable per tenant and per event type. The defaults use exponential backoff with jitter:
-
-```
-delay = base * 2^attempt + rand(0, base)
-```
-
-The jitter matters. Without it, a batch of failed deliveries retries in lockstep, creating a thundering herd that overwhelms a recovering endpoint. With jitter, retries spread out naturally.
+Firefly's retry model is configurable per event type. Rather than a single strategy applied everywhere, teams choose from a catalogue: linear, exponential, jittered exponential, fibonacci, decorrelated jitter, or no retry. The right choice depends on the downstream endpoint's failure characteristics — a flaky third-party API behaves differently from an internal service under load, and the retry strategy should reflect that.
 
 After a configurable number of attempts, failed events move to a dead letter queue. Operators can inspect the DLQ, understand the failure reason, and replay events once the downstream issue is resolved. Replay is a first-class operation — not something that requires manual intervention in a database.
 
@@ -37,7 +31,7 @@ This matters in practice. Infrastructure decisions change. Queue vendors get exp
 
 ## Auth
 
-Firefly supports OAuth for authenticating outbound webhook calls. Tokens are fetched and cached, refreshed automatically before expiry. Recipients that require signed payloads get HMAC signatures on every request. The auth configuration lives in Pickle, so it can be updated without a code change.
+Outbound webhook calls are authenticated via OAuth, with Keycloak handling token issuance and refresh.
 
 ## Observability
 

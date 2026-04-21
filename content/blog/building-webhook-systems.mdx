@@ -23,13 +23,9 @@ Your webhook system can guarantee delivery. It cannot guarantee idempotency — 
 
 ### Retry strategies matter more than you think
 
-Exponential backoff with jitter is the standard for a reason. Linear retries hammer a struggling endpoint. Pure exponential without jitter causes thundering herds when multiple events fail simultaneously and then retry in sync.
+There's no single right retry strategy — the right choice depends on the downstream endpoint's failure characteristics. A flaky third-party API, an overloaded internal service, and a temporarily unavailable partner each call for different approaches. Linear retries, exponential backoff, fibonacci, decorrelated jitter — these aren't interchangeable.
 
-```
-delay = baseDelay * 2^attempt + random(0, baseDelay)
-```
-
-Set a cap on retries. After N failures, move the event to a dead letter queue rather than retrying indefinitely. Infinite retries are just a slow memory leak with extra steps.
+What does matter universally: don't retry indefinitely. Set a cap. After N failures, move the event to a dead letter queue. Infinite retries are just a slow memory leak with extra steps.
 
 ### Dead letter queues are not optional
 
