@@ -1,0 +1,48 @@
+---
+title: "Pickle"
+description: "gRPC microservice extracted from a legacy monolith to own configuration management across all tenants."
+period: "Jan 2024 – Present"
+tech: ["Go", "gRPC", "React", "Terraform", "Helm", "PostgreSQL"]
+---
+
+Configuration management is one of those things that works fine when you have one service and a handful of settings, and becomes a real problem at scale. At FinBox, config had grown organically inside the main monolith: hardcoded values, environment variables, database rows, Redis keys — spread across the codebase with no consistent pattern and no way to answer "what was this value set to last Tuesday?"
+
+Pickle was built to fix that.
+
+## The problem with config in a monolith
+
+The deeper issue wasn't just disorganization. It was that config changes were tied to the deployment lifecycle of the monolith. Changing a feature flag meant a code review, a merge, a deployment. For time-sensitive changes — activating a new vendor at a specific time, adjusting rate limits in response to load — this was too slow.
+
+Multi-tenancy added another dimension. FinBox serves multiple business tenants, and config values often differ per tenant. The monolith had no clean way to model this. Values were duplicated, tenant-specific overrides were scattered, and there was no isolation between tenant configurations.
+
+## What Pickle is
+
+Pickle is a standalone gRPC microservice that owns configuration management for the entire platform. Every service that previously read config from the monolith now calls Pickle instead.
+
+The core data model is built around **namespaces** — a namespace is a tenant-scoped container for configuration. Services read config from their namespace. Tenants cannot read each other's namespaces. This isolation is enforced at the service level, not the application level.
+
+Every config value has a full version history. You can see what a value was at any point in time, who changed it, and why. Rollback is a first-class operation.
+
+## Scheduled activation
+
+One of the features that immediately proved its value was scheduled activation. Teams can stage a config change — "set this value to X at 2024-03-15 09:00 IST" — and Pickle handles the timing. No cron jobs, no remembering to make the change manually, no risk of a time-zone mistake.
+
+This was especially useful for vendor onboarding: activating a new payment provider during a low-traffic window with zero human intervention on the day.
+
+## RBAC
+
+Configuration changes in a financial platform need strict access control. Pickle implements hierarchical role-based access control with roles scoped to namespaces.
+
+The hierarchy: a role defined at a parent namespace is inherited by child namespaces, but can be overridden. This mirrors the tenant structure without requiring duplicate role definitions. Every change is logged with actor, timestamp, and the before/after values — a full audit trail for compliance.
+
+## OctoDash integration
+
+Config management without a UI is only useful to engineers. We built a React frontend (part of the OctoDash system) that exposes config versioning, namespace management, and scheduling to non-engineering users. Operators can schedule activations, review history, and roll back changes without touching an API.
+
+## Infrastructure
+
+Pickle is deployed via Terraform and Helm. OpenTelemetry instrumentation gives full distributed tracing — every config read and write is traceable back to the calling service and the specific request that triggered it.
+
+---
+
+The most important outcome of Pickle wasn't any specific feature — it was establishing a single source of truth for configuration. The monolith no longer owns configuration data. Teams have a clear contract for reading and writing config. And the full audit history means that "what changed and when" is now a 30-second query instead of an hour of log archaeology.

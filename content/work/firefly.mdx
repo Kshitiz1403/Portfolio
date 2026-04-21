@@ -1,0 +1,50 @@
+---
+title: "Firefly"
+description: "Multi-tenant webhook delivery platform with configurable retry strategies and dead letter queues."
+period: "Jan 2024 – Present"
+tech: ["Go", "AWS SQS", "EventBridge", "OAuth", "Terraform", "Helm"]
+---
+
+Webhooks are how FinBox notifies external systems about events — a loan disbursement, a KYC completion, a payment status update. Before Firefly, each microservice implemented its own delivery: its own retry logic, its own failure handling, its own monitoring. The implementations diverged, bugs were fixed in some places and not others, and debugging a missed webhook meant figuring out which service owned that event type and then reading its specific implementation.
+
+Firefly centralizes all of this.
+
+## The delivery problem
+
+At-least-once delivery is the fundamental guarantee webhook systems need to make. The recipient might be down. They might return a 500. The network might drop the connection. Your system needs to retry — but retrying naively creates new problems.
+
+Firefly's retry model is configurable per tenant and per event type. The defaults use exponential backoff with jitter:
+
+```
+delay = base * 2^attempt + rand(0, base)
+```
+
+The jitter matters. Without it, a batch of failed deliveries retries in lockstep, creating a thundering herd that overwhelms a recovering endpoint. With jitter, retries spread out naturally.
+
+After a configurable number of attempts, failed events move to a dead letter queue. Operators can inspect the DLQ, understand the failure reason, and replay events once the downstream issue is resolved. Replay is a first-class operation — not something that requires manual intervention in a database.
+
+## Multi-tenancy
+
+Multiple tenants use Firefly, and their webhook workloads are completely isolated. A tenant sending a large batch of events doesn't affect delivery latency for other tenants.
+
+The isolation is implemented through per-tenant SQS queues. Each tenant's events flow through their own queue. Consumption is independent. Rate limits are configurable per tenant. One noisy neighbor can't starve the others.
+
+## Pluggable queue architecture
+
+SQS isn't the only queue system FinBox will ever use. Rather than hardcoding SQS semantics throughout Firefly, the queue layer is abstracted behind an interface. The current implementation uses SQS for standard delivery and EventBridge Scheduler for time-delayed retries, but replacing either requires only a new implementation of the queue interface — no changes to the delivery engine.
+
+This matters in practice. Infrastructure decisions change. Queue vendors get expensive. New options emerge. The abstraction means Firefly's delivery logic doesn't have to change when the underlying queue does.
+
+## Auth
+
+Firefly supports OAuth for authenticating outbound webhook calls. Tokens are fetched and cached, refreshed automatically before expiry. Recipients that require signed payloads get HMAC signatures on every request. The auth configuration lives in Pickle, so it can be updated without a code change.
+
+## Observability
+
+Every delivery attempt is traced with OpenTelemetry. Metrics cover queue depth per tenant, delivery latency, retry counts, and DLQ accumulation rates. The instrumentation was built in from the start — not added later — which means the data is consistent and complete.
+
+Deployed with Terraform and Helm alongside the rest of the FinBox platform.
+
+---
+
+Building Firefly made one thing very clear: delivery infrastructure looks boring from the outside but is where reliability lives. The event that didn't arrive is invisible to the sender and catastrophic to the recipient. Getting this right — retries, DLQs, isolation, observability — is what makes the difference between a system that works most of the time and one that you can trust.

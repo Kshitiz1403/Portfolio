@@ -1,0 +1,46 @@
+---
+title: "Collaborative IDE"
+description: "Real-time code editor with CRDT-based conflict resolution, Docker-sandboxed execution, and LSP-powered autocomplete."
+period: "May – Jun 2022"
+tech: ["TypeScript", "Node.js", "React", "Docker", "WebSocket", "Redis", "CRDT", "YJS"]
+---
+
+Most online code editors fall into one of two categories: single-user playgrounds that run code in the browser, or heavyweight tools like Replit that require accounts, subscriptions, and significant infrastructure. I wanted something in the middle — a shareable coding environment that runs real code in real languages, with no friction to start and genuine real-time collaboration.
+
+This was the Collaborative IDE.
+
+## Real-time collaboration without conflicts
+
+The hardest part of any collaborative editor is what happens when two people type at the same time. Naive approaches — last write wins, operational transformation — either lose data or require complex, brittle conflict resolution logic.
+
+I used **CRDTs** (Conflict-free Replicated Data Types) via [YJS](https://github.com/yjs/yjs), a mature CRDT implementation for shared data structures. With CRDTs, every client maintains a local copy of the document. Edits are expressed as operations that can always be merged correctly, regardless of order. Two people can type simultaneously, disconnect, reconnect, and the document always converges to the same correct state.
+
+YJS handles the document model. WebSockets handle the network layer — edits are broadcast to all connected clients in real time.
+
+## Code execution in isolated containers
+
+Running user code in a shared environment is a security problem. You can't let one user's code affect another's environment, consume unbounded resources, or persist state between sessions.
+
+The solution was Docker. For each execution request, the server uses the **Docker Engine API** to spin up a fresh container for the appropriate language runtime (NodeJS, Python, C++, Java), execute the code, capture stdout/stderr, and destroy the container. Each execution is fully isolated — no shared state, no resource leakage.
+
+The tradeoff is latency. Container startup adds overhead. For a prototype, this was acceptable. In a production system, pre-warming a container pool would reduce this significantly.
+
+## Autocomplete via Language Server Protocol
+
+Modern editors like VS Code get their autocomplete, go-to-definition, and type-checking from **Language Server Protocol (LSP)** — a standard interface where a language-specific server provides intelligence to any compatible editor.
+
+The editor is built on [Monaco](https://github.com/microsoft/monaco-editor) (the editor powering VS Code). I integrated LSP support so each language has real autocomplete — not regex-based keyword matching, but actual semantic understanding of the code being written.
+
+## Stack decisions
+
+**Monaco** was the obvious editor choice given its LSP support and the quality of its editing experience.
+
+**Redis** handles session state — which users are in which room, cursor positions, presence information.
+
+**YJS** over a custom CRDT was a deliberate choice. CRDTs are notoriously tricky to implement correctly, and YJS has years of production use behind it.
+
+**Docker Engine API** directly (not docker-compose or Kubernetes) because the use case is simple: create container, run code, destroy container. The overhead of an orchestration layer wasn't justified.
+
+---
+
+This was the project where I developed real opinions about distributed systems. The CRDT model in particular — the idea that you can design data structures where concurrent operations always merge correctly — shaped how I think about consistency and state in distributed systems generally. It's a fundamentally different approach to conflict resolution than the lock-based or server-authoritative models I'd seen before.

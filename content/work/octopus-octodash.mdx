@@ -1,0 +1,55 @@
+---
+title: "Octopus & OctoDash"
+description: "Internal HTTP proxy with a custom DSL for declarative configuration of encryption, auth flows, and routing."
+period: "Jan 2024 – Present"
+tech: ["Go", "DSL", "React", "gRPC"]
+---
+
+FinBox integrates with a large number of third-party vendors — payment gateways, KYC providers, communication services. Before Octopus, each service team was responsible for its own vendor integration: writing auth flows, handling encryption, implementing retry logic, and managing failover independently. The result was duplicated code, inconsistent behavior, and no single place to understand what was happening across the system.
+
+Octopus is the answer to that problem.
+
+## What it is
+
+Octopus is an internal HTTP proxy that sits between FinBox services and their external vendors. Every outbound call routes through it. The proxy handles the concerns that used to be scattered — encryption, authentication, webhook verification, routing, retry — in one place.
+
+The key design decision was to make the proxy configuration **declarative**. Rather than hardcoding vendor-specific logic into the proxy itself, we built a custom DSL that lets teams describe what they need:
+
+```
+service payments {
+  vendor stripe {
+    auth bearer $STRIPE_KEY
+    encrypt body aes-256
+    retry 3 exponential
+    on_failure fallback razorpay
+  }
+}
+```
+
+This separation — routing logic in config, execution in the proxy — means adding a new vendor or changing an auth flow doesn't require a code deploy.
+
+## Adaptive vendor selection
+
+One of the more interesting problems was vendor selection. FinBox uses multiple providers for some services, and the best provider at any given moment depends on real-time factors: latency, error rate, success rate in the last N minutes.
+
+We built a scoring algorithm that continuously aggregates performance metrics per vendor and routes new requests to the highest-scoring one. When a vendor's score drops below a threshold, it gets automatically deprioritized. When it recovers, it's brought back into rotation.
+
+The failover mechanism is deterministic from the config perspective — teams declare `on_failure fallback <vendor>` — but the scoring system means the "primary" vendor is always the currently best-performing one.
+
+## Custom code execution
+
+Some business logic doesn't fit cleanly into declarative config. For those cases, Octopus supports custom code plugins using Go's native plugin system. Teams can write Go code that gets loaded at runtime and executed in isolation — no separate containers, no gRPC calls, no serialization overhead.
+
+This was a deliberate tradeoff. The plugin approach is less isolated than a container, but for the class of logic we needed (data transformation, conditional routing), the performance profile was much better.
+
+## OctoDash
+
+Running a proxy that handles all vendor traffic is only useful if you can understand what it's doing. OctoDash is the management dashboard we built alongside Octopus.
+
+It handles service onboarding — giving teams a UI to register their services and configure their DSL without touching files directly. It shows live proxy metrics: request volume per vendor, error rates, scoring history, active failover states. It also provides an audit log of configuration changes.
+
+The frontend is React. The backend talks to Octopus over gRPC.
+
+---
+
+The biggest lesson from building Octopus was that the DSL design is the hardest part. Getting the abstraction level right — expressive enough to cover real use cases, simple enough that teams can read and write it without documentation — took several iterations. The execution engine was comparatively straightforward once the language had the right primitives.

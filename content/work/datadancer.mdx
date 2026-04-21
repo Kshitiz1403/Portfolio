@@ -1,0 +1,72 @@
+---
+title: "DataDancer"
+description: "Go library implementing the Serverless Workflow Specification for in-memory, short-running workflows."
+period: "Jan 2024 – Present"
+tech: ["Go", "Serverless Workflow", "OpenTelemetry"]
+---
+
+FinBox runs a lot of short-lived data transformation workflows. An event comes in, it needs to be validated, enriched from a few sources, transformed into a target shape, and forwarded. These aren't long-running processes — they complete in milliseconds to seconds.
+
+The natural instinct is to reach for Temporal. But Temporal is designed for durable, long-running workflows that need to survive process restarts. For short-running in-memory work, it introduces unnecessary overhead: a separate Temporal server, worker processes, workflow history serialization. For a workflow that runs in 50ms, that's a lot of infrastructure to maintain.
+
+DataDancer was built to fill that gap.
+
+## What it is
+
+DataDancer is a Go library that implements the [Serverless Workflow Specification](https://serverlessworkflow.io/) for in-memory execution. You define your workflow in YAML or JSON following the spec, and DataDancer executes it — no external dependencies, no separate servers.
+
+```yaml
+id: enrich-loan-application
+version: "1.0"
+states:
+  - name: validate
+    type: operation
+    actions:
+      - functionRef: validateApplication
+    transition: enrich
+
+  - name: enrich
+    type: operation
+    actions:
+      - functionRef: fetchCreditScore
+      - functionRef: fetchBankStatement
+    transition: transform
+
+  - name: transform
+    type: operation
+    actions:
+      - functionRef: normalizeToCreditModel
+    end: true
+```
+
+This workflow runs entirely in-process. If the process dies, the workflow doesn't resume — but for the class of short-running work we're targeting, that's the right tradeoff.
+
+## The JSON transformation engine
+
+A significant part of the work was building the transformation layer. Real-world workflows don't just call functions in sequence — they need to reshape data between steps: extract fields, rename keys, compute derived values, filter arrays.
+
+DataDancer includes a config-driven JSON transformation engine that handles this declaratively. You describe the transformation in the workflow definition, and the engine applies it without custom code. For more complex cases, the spec supports custom function activities that DataDancer can invoke directly.
+
+This engine now powers ETL pipelines across 4+ microservices at FinBox, replacing bespoke transformation code that was scattered and inconsistently tested.
+
+## Extensibility
+
+One of the explicit design goals was zero hard dependencies. Microservices that embed DataDancer should be able to stay lean.
+
+The library achieves this through injection interfaces. Teams can inject:
+
+- **Custom activities** — Go functions registered by name, callable from workflow definitions
+- **Custom loggers** — any logger implementing the interface, defaulting to a no-op
+- **OpenTelemetry instrumentation** — trace and span hooks that wire into the host service's observability setup
+
+None of these are required. A service that just wants basic workflow execution adds no external dependencies at all.
+
+## Serverless Workflow spec compliance
+
+Implementing a spec rather than building a proprietary engine was a deliberate choice. The Serverless Workflow Specification is an open standard with broad industry support. Building against it means workflows are portable, tooling exists, and the mental model is shareable.
+
+The spec covers more than DataDancer currently implements — durable execution, event-driven triggers, compensation flows. We've scoped to what short-running in-memory execution needs. The spec's design made it possible to implement a strict subset without compromising correctness.
+
+---
+
+DataDancer demonstrated that for a well-scoped problem, a focused library beats a general platform. The services using it are simpler, faster to understand, and easier to test than the equivalent Temporal-based implementations would have been.
