@@ -1,5 +1,18 @@
 import Link from 'next/link'
 
+function boldify(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g)
+  return parts.map((part, i) =>
+    part.startsWith('**') && part.endsWith('**') ? (
+      <strong key={i} className="font-medium text-stone-800 dark:text-zinc-200">
+        {part.slice(2, -2)}
+      </strong>
+    ) : (
+      part
+    )
+  )
+}
+
 const experience = [
   {
     company: 'FinBox',
@@ -13,10 +26,8 @@ const experience = [
         description:
           'Internal HTTP proxy with a custom DSL for declarative configuration of encryption, auth flows, and routing.',
         highlights: [
-          'Designed a custom DSL covering encryption protocols, auth flows, webhooks, and routing — replacing hand-rolled middleware per service',
-          'Built OctoDash, a full-stack management dashboard for service onboarding and live proxy monitoring',
-          'Implemented adaptive vendor selection with real-time performance metrics and automatic failover',
-          "Enabled custom code execution via Go's plugin system, avoiding container overhead entirely",
+          'Designed a **custom DSL** covering encryption, auth flows, and routing — replacing hand-rolled middleware per service',
+          'Implemented **adaptive vendor selection** with real-time performance metrics and automatic failover',
         ],
         tech: ['Go', 'DSL', 'React', 'gRPC'],
       },
@@ -26,10 +37,8 @@ const experience = [
         description:
           'Go library implementing the Serverless Workflow Specification for in-memory, short-running workflows.',
         highlights: [
-          'Implemented the Serverless Workflow Specification in pure Go — no Temporal, no external orchestration',
-          'Built a config-driven JSON transformation engine with support for custom function activities',
-          'Powers ETL pipelines and data transformations across 4+ microservices at FinBox',
-          'Designed extensible hooks for injecting custom activities, loggers, and OpenTelemetry tracing',
+          'Implemented the **Serverless Workflow Specification** in pure **Go** — no Temporal, no external orchestration',
+          'Powers **ETL pipelines** across 4+ microservices at FinBox with a config-driven JSON transformation engine',
         ],
         tech: ['Go', 'Serverless Workflow', 'OpenTelemetry'],
       },
@@ -39,10 +48,8 @@ const experience = [
         description:
           'gRPC microservice extracted from a legacy monolith to own configuration management across all tenants.',
         highlights: [
-          'Extracted config management from a legacy monolith into a standalone gRPC microservice',
-          'Added version control, scheduled activation, and strict multi-tenant namespace isolation',
-          'Implemented hierarchical RBAC with tenant-scoped permissions and a full audit log',
-          'Shipped a React frontend for config versioning, namespace management, and rollback',
+          'Extracted config management from a monolith into a **gRPC microservice** with version control and **hierarchical RBAC**',
+          '**Multi-tenant namespace isolation** with scheduled activation and a full audit log',
         ],
         tech: ['Go', 'gRPC', 'React', 'Terraform', 'Helm', 'PostgreSQL'],
       },
@@ -52,9 +59,8 @@ const experience = [
         description:
           'Multi-tenant webhook delivery platform with configurable retry strategies and dead letter queues.',
         highlights: [
-          'Delivered reliable multi-tenant webhook dispatch with per-tenant configurable retry policies',
-          'Integrated OAuth authentication and dead letter queue handling for failed deliveries',
-          'Built a pluggable queue backend — currently backed by SQS and EventBridge Scheduler',
+          'Multi-tenant **webhook delivery** with per-tenant configurable **retry strategies** and dead letter queue handling',
+          '**Pluggable queue backend** — backed by SQS and EventBridge Scheduler, designed for easy replacement',
         ],
         tech: ['Go', 'AWS SQS', 'EventBridge', 'OAuth'],
       },
@@ -64,9 +70,8 @@ const experience = [
         description:
           'Temporal-based orchestrator that parses Serverless Workflow specs and executes durable business workflows.',
         highlights: [
-          'Built a Temporal orchestrator that parses and executes Serverless Workflow specification files',
-          'Enables non-engineers to define complex, fault-tolerant business logic through YAML config',
-          'Active contributor to the Serverless Workflow Go SDK open source project',
+          'Built a **Temporal orchestrator** that parses and executes Serverless Workflow specs with full fault tolerance',
+          'Enables non-engineers to define complex workflows through **YAML config**; active contributor to the **Go SDK**',
         ],
         tech: ['Go', 'Temporal', 'Serverless Workflow'],
       },
@@ -151,7 +156,7 @@ export default function Home() {
           <div key={job.company}>
             <div className="flex items-baseline justify-between mb-8">
               <div className="flex items-baseline gap-2">
-                <span className="font-medium text-stone-800 dark:text-zinc-100">{job.company}</span>
+                <span className="text-base font-semibold text-stone-800 dark:text-zinc-100">{job.company}</span>
                 <span className="text-stone-400 dark:text-zinc-600 text-sm">·</span>
                 <span className="text-stone-500 dark:text-zinc-500 text-sm">{job.role}</span>
               </div>
@@ -159,12 +164,12 @@ export default function Home() {
                 {job.location} · {job.period}
               </span>
             </div>
-            <div className="space-y-10">
+            <div className="divide-y divide-stone-100 dark:divide-zinc-900">
               {job.projects.map((project) => (
-                <div key={project.name}>
+                <div key={project.name} className="py-8 first:pt-0">
                   <Link
                     href={`/work/${project.slug}`}
-                    className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200 mb-1.5"
+                    className="group/link inline-flex items-center gap-1.5 text-base font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200 mb-1.5"
                   >
                     {project.name}
                     <span className="text-stone-400 dark:text-zinc-700 group-hover/link:text-emerald-700 dark:group-hover/link:text-emerald-500 transition-colors duration-200 text-xs">↗</span>
@@ -174,7 +179,7 @@ export default function Home() {
                     {project.highlights.map((point, i) => (
                       <li key={i} className="flex gap-2 text-sm text-stone-500 dark:text-zinc-600 leading-relaxed">
                         <span className="text-stone-300 dark:text-zinc-700 shrink-0 select-none mt-px">—</span>
-                        <span>{point}</span>
+                        <span>{boldify(point)}</span>
                       </li>
                     ))}
                   </ul>
