@@ -42,7 +42,3 @@ The tradeoff is cost and operational overhead as tenant count grows. Worth it at
 ## What I'd do differently
 
 **Observability from day one.** We instrumented Firefly with OpenTelemetry from the start, but I still underestimated how much visibility matters in a delivery system. Queue depth, delivery latency per tenant, failure rates by endpoint — add these metrics before you need them in an incident.
-
----
-
-Building Firefly clarified something for me: infrastructure components look boring from the outside but contain most of the interesting engineering problems. Reliability, consistency, and fault tolerance don't show up in feature demos. They show up at 3am when something breaks.
