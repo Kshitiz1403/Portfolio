@@ -40,7 +40,7 @@ const experience = [
           'Designed a **custom DSL** covering encryption, auth flows, and routing — replacing hand-rolled middleware per service',
           'Implemented **adaptive vendor selection** with real-time performance metrics and automatic failover',
         ],
-        tech: ['Go', 'DSL', 'React', 'gRPC'],
+        tech: ['Go', 'React', 'PostgreSQL', 'Redis', 'Kafka', 'OpenTelemetry', 'AWS'],
       },
       {
         slug: 'pickle',

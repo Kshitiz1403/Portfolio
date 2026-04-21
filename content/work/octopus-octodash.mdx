@@ -2,7 +2,7 @@
 title: "Octopus & OctoDash"
 description: "Internal HTTP proxy with a custom DSL for declarative configuration of encryption, auth flows, and routing."
 period: "Jan 2024 – Present"
-tech: ["Go", "DSL", "React", "gRPC"]
+tech: ["Go", "React", "PostgreSQL", "Redis", "Kafka", "OpenTelemetry", "AWS S3", "AWS KMS"]
 ---
 
 FinBox integrates with a large number of third-party vendors — payment gateways, KYC providers, communication services. Before Octopus, each service team was responsible for its own vendor integration: writing auth flows, handling encryption, implementing retry logic, and managing failover independently. The result was duplicated code, inconsistent behavior, and no single place to understand what was happening across the system.
@@ -37,7 +37,7 @@ Running a proxy that handles all vendor traffic is only useful if you can unders
 
 It handles service onboarding — giving teams a UI to register their services and configure their config. It also provides an audit log of configuration changes.
 
-The frontend is React. The backend talks to Octopus over gRPC.
+The frontend is React.
 
 ## Where DataDancer came from
 
