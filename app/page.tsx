@@ -21,17 +21,6 @@ const experience = [
     location: 'Bengaluru',
     projects: [
       {
-        slug: 'octopus-octodash',
-        name: 'Octopus & OctoDash',
-        description:
-          'Internal HTTP proxy with a custom DSL for declarative configuration of encryption, auth flows, and routing.',
-        highlights: [
-          'Designed a **custom DSL** covering encryption, auth flows, and routing — replacing hand-rolled middleware per service',
-          'Implemented **adaptive vendor selection** with real-time performance metrics and automatic failover',
-        ],
-        tech: ['Go', 'DSL', 'React', 'gRPC'],
-      },
-      {
         slug: 'datadancer',
         name: 'DataDancer',
         description:
@@ -41,6 +30,17 @@ const experience = [
           'Powers **ETL pipelines** across 4+ microservices at FinBox with a config-driven JSON transformation engine',
         ],
         tech: ['Go', 'Serverless Workflow', 'OpenTelemetry'],
+      },
+      {
+        slug: 'octopus-octodash',
+        name: 'Octopus & OctoDash',
+        description:
+          'Internal HTTP proxy with a custom DSL for declarative configuration of encryption, auth flows, and routing.',
+        highlights: [
+          'Designed a **custom DSL** covering encryption, auth flows, and routing — replacing hand-rolled middleware per service',
+          'Implemented **adaptive vendor selection** with real-time performance metrics and automatic failover',
+        ],
+        tech: ['Go', 'DSL', 'React', 'gRPC'],
       },
       {
         slug: 'pickle',
