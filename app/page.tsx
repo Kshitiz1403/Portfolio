@@ -155,13 +155,13 @@ export default function Home() {
         </h2>
         {experience.map((job) => (
           <div key={job.company}>
-            <div className="flex items-baseline justify-between mb-8">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between mb-8">
               <div className="flex items-baseline gap-2">
                 <span className="text-base font-semibold text-stone-800 dark:text-zinc-100">{job.company}</span>
                 <span className="text-stone-400 dark:text-zinc-600 text-sm">·</span>
                 <span className="text-stone-500 dark:text-zinc-500 text-sm">{job.role}</span>
               </div>
-              <span className="text-xs text-stone-400 dark:text-zinc-700 font-mono shrink-0 ml-4">
+              <span className="text-xs text-stone-400 dark:text-zinc-700 font-mono sm:shrink-0 sm:ml-4">
                 {job.location} · {job.period}
               </span>
             </div>
