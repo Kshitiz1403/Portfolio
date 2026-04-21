@@ -43,8 +43,6 @@ The tradeoff is cost and operational overhead as tenant count grows. Worth it at
 
 **Observability from day one.** We instrumented Firefly with OpenTelemetry from the start, but I still underestimated how much visibility matters in a delivery system. Queue depth, delivery latency per tenant, failure rates by endpoint — add these metrics before you need them in an incident.
 
-**Version your event schema early.** Webhook payloads evolve as your product does. Adding versioning retroactively, when consumers are already in production and expect a specific shape, is painful. Start with a `version` field in every payload, even if you never use it.
-
 ---
 
 Building Firefly clarified something for me: infrastructure components look boring from the outside but contain most of the interesting engineering problems. Reliability, consistency, and fault tolerance don't show up in feature demos. They show up at 3am when something breaks.
