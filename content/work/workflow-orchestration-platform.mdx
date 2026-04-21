@@ -39,6 +39,18 @@ The most interesting engineering challenge was **mapping the Serverless Workflow
 
 The second challenge was **error semantics**. The spec has a defined error handling model. Temporal has its own retry and error propagation model. Getting them to compose correctly — so that a workflow definition's error handling behavior is what actually executes — required working through a lot of edge cases.
 
+## Guardrails
+
+As the platform grew and more teams started publishing workflows, a new class of problems emerged: misconfigured workflows consuming disproportionate resources and impacting fairness for everyone else. A workflow with a cycle that never terminates, or one that spawns an unbounded number of steps, could starve other workflows or bring the system under load.
+
+We introduced a layer of **guardrails** to catch these at runtime before they cause damage:
+
+- **Cooldown periods** — workflows that trigger too frequently are throttled, preventing runaway execution loops
+- **Workflow size limits** — if the data carried by a workflow exceeds a byte threshold at runtime, the workflow is terminated before it can bloat memory
+- **Cycle breach detection** — if a cycle between nodes in the workflow graph is traversed more than a set threshold, the workflow is terminated to prevent infinite loops
+
+These checks enforce **fairness across tenants and teams** — no single misconfigured workflow can monopolise the platform. The error surfaces clearly so the publishing team can identify and fix the issue rather than silently degrading the system for others.
+
 ## Relationship to DataDancer
 
 The Workflow Orchestration Platform and DataDancer solve related but distinct problems. DataDancer is for short-running, in-memory workflows where Temporal's overhead isn't justified — data transformations, ETL steps that complete in milliseconds. This platform is for durable, long-running business processes that need to survive failures and may wait hours or days for external events. The two coexist: DataDancer often runs as an activity within a larger Temporal workflow.
