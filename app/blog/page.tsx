@@ -24,11 +24,12 @@ export default function BlogPage() {
                 <span className="text-sm text-stone-700 dark:text-zinc-300 group-hover:text-stone-900 dark:group-hover:text-zinc-50 transition-colors duration-200">
                   {post.title}
                 </span>
-                <span className="text-xs text-stone-400 dark:text-zinc-700 font-mono ml-4 shrink-0">
+                <span className="text-xs text-stone-400 dark:text-zinc-700 font-mono ml-4 shrink-0 whitespace-nowrap">
                   {new Date(post.date).toLocaleDateString('en-US', {
                     month: 'short',
                     year: 'numeric',
                   })}
+                  {' · '}{post.readingTime} min
                 </span>
               </div>
               <p className="text-sm text-stone-500 dark:text-zinc-600">{post.description}</p>

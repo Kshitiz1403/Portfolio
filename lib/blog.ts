@@ -13,6 +13,11 @@ export type PostMeta = {
 
 export type Post = PostMeta & {
   slug: string
+  readingTime: number
+}
+
+function calcReadingTime(content: string): number {
+  return Math.max(1, Math.round(content.trim().split(/\s+/).length / 200))
 }
 
 export function getAllPosts(): Post[] {
@@ -24,17 +29,17 @@ export function getAllPosts(): Post[] {
     .map((f) => {
       const slug = f.replace('.mdx', '')
       const raw = fs.readFileSync(path.join(contentDir, f), 'utf-8')
-      const { data } = matter(raw)
-      return { slug, ...(data as PostMeta) }
+      const { data, content } = matter(raw)
+      return { slug, readingTime: calcReadingTime(content), ...(data as PostMeta) }
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
-export function getPost(slug: string): { meta: PostMeta; content: string } {
+export function getPost(slug: string): { meta: PostMeta; content: string; readingTime: number } {
   const filePath = path.join(contentDir, `${slug}.mdx`)
   const raw = fs.readFileSync(filePath, 'utf-8')
   const { data, content } = matter(raw)
-  return { meta: data as PostMeta, content }
+  return { meta: data as PostMeta, content, readingTime: calcReadingTime(content) }
 }
 
 export function getAllSlugs(): string[] {

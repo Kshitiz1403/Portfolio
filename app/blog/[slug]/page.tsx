@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   try {
     const { slug } = await params
-    const { meta, content } = getPost(slug)
+    const { meta, content, readingTime } = getPost(slug)
 
     return (
       <div>
@@ -46,6 +46,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 year: 'numeric',
               })}
             </span>
+            <span>·</span>
+            <span className="font-mono">{readingTime} min read</span>
             {meta.tags && meta.tags.length > 0 && (
               <>
                 <span>·</span>

@@ -81,6 +81,7 @@ const experience = [
 
 const projects = [
   {
+    slug: 'collaborative-ide',
     name: 'Collaborative IDE',
     period: '2022',
     description:
@@ -209,7 +210,13 @@ export default function Home() {
           {projects.map((project) => (
             <div key={project.name}>
               <div className="flex items-baseline justify-between mb-2">
-                <span className="font-medium text-stone-800 dark:text-zinc-200">{project.name}</span>
+                <Link
+                  href={`/work/${project.slug}`}
+                  className="group/link inline-flex items-center gap-1.5 font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200"
+                >
+                  {project.name}
+                  <span className="text-stone-400 dark:text-zinc-700 group-hover/link:text-emerald-700 dark:group-hover/link:text-emerald-500 transition-colors duration-200 text-xs">↗</span>
+                </Link>
                 <span className="text-xs text-stone-400 dark:text-zinc-700 font-mono ml-4 shrink-0">
                   {project.period}
                 </span>
