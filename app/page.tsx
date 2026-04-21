@@ -32,6 +32,17 @@ const experience = [
         tech: ['Go', 'Serverless Workflow', 'OpenTelemetry'],
       },
       {
+        slug: 'workflow-orchestration-platform',
+        name: 'Workflow Orchestration Platform',
+        description:
+          'Temporal-based orchestrator that parses Serverless Workflow specs and executes durable business workflows.',
+        highlights: [
+          'Core developer on one of FinBox\'s most critical platforms — a **Temporal-based orchestrator** executing durable business workflows',
+          'Built a **no-code canvas** where non-developers stitch together activities to define and deploy workflows without engineering involvement',
+        ],
+        tech: ['Go', 'Temporal', 'Serverless Workflow'],
+      },
+      {
         slug: 'octopus-octodash',
         name: 'Octopus & OctoDash',
         description:
@@ -63,18 +74,7 @@ const experience = [
           '**Pluggable queue backend** — backed by SQS and EventBridge Scheduler, designed for easy replacement',
         ],
         tech: ['Go', 'AWS SQS', 'EventBridge', 'OAuth'],
-      },
-      {
-        slug: 'workflow-orchestration-platform',
-        name: 'Workflow Orchestration Platform',
-        description:
-          'Temporal-based orchestrator that parses Serverless Workflow specs and executes durable business workflows.',
-        highlights: [
-          'Built a **Temporal orchestrator** that parses and executes Serverless Workflow specs with full fault tolerance',
-          'Enables non-engineers to define complex workflows through **YAML config**; active contributor to the **Go SDK**',
-        ],
-        tech: ['Go', 'Temporal', 'Serverless Workflow'],
-      },
+      }
     ],
   },
 ]

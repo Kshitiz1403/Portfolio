@@ -5,46 +5,44 @@ period: "Jan 2024 – Present"
 tech: ["Go", "Temporal", "Serverless Workflow"]
 ---
 
-Business processes at a fintech company are complex and change often. A loan application moves through credit scoring, document verification, underwriting rules, disbursement checks, and notification steps. The logic evolves — new regulatory requirements, new vendor integrations, edge cases discovered in production. Before this platform, those changes meant a developer making code changes, a code review, a deployment. Non-technical teams could describe what they wanted in plain language but had no way to implement it without engineering involvement.
+Business processes at a fintech company are complex and change constantly. A loan application moves through credit scoring, document verification, underwriting rules, disbursement checks, and notification steps. The logic evolves — new regulatory requirements, new vendor integrations, edge cases discovered in production. Before this platform, every change meant a developer writing code, a code review, a deployment. Non-technical teams could describe what they wanted but had no path to implement it without engineering involvement.
 
-The Workflow Orchestration Platform was built to change that.
+The Workflow Orchestration Platform is one of the most important pieces of technology at FinBox. I am the core developer on this project.
 
 ## The approach
 
 The platform uses two things together: Temporal for durable execution, and the [Serverless Workflow Specification](https://serverlessworkflow.io/) as the definition language.
 
-Temporal provides the execution guarantees — workflows survive process crashes, network failures, and long waits. It handles retries, history, and replay correctly at the infrastructure level. You don't have to build that yourself.
+Temporal provides the execution guarantees — workflows survive process crashes, network failures, and long waits. It handles retries, history, and replay correctly at the infrastructure level.
 
-The Serverless Workflow Specification provides the language. Workflows are defined in YAML or JSON following an open standard. The spec covers state machines, event triggers, parallel execution, error handling, and compensation flows — enough expressive power to model real business processes.
+The Serverless Workflow Specification provides the language. Workflows are defined following an open standard that covers state machines, event triggers, parallel execution, error handling, and compensation flows — enough expressive power to model real business processes.
 
 The platform connects them: it parses a workflow definition, maps each state to a Temporal workflow or activity, and executes it with full durability guarantees.
 
-## What it enables
+## The canvas
 
-A product manager can open the Serverless Workflow Editor, define a new onboarding flow as a state machine, and deploy it. An operations team can modify an existing disbursement workflow to add a new compliance check. Neither requires a developer to write or review Go code.
+The most visible outcome of this platform is a product built on top of it: a visual canvas for non-developers.
 
-The platform exposes a set of registered activities — functions that perform real work: call an external API, check a database, send a notification, apply a business rule. Workflow definitions reference these activities by name. Adding a new activity requires engineering. Composing existing activities into new workflows does not.
+Operations teams, product managers, and business analysts open the canvas and see a library of readily available activities — call this API, apply this rule, send this notification, run this check. They drag activities onto the canvas and stitch them together into a workflow. No code, no deployments, no engineering involvement. When the workflow is ready, they publish it and it executes on the orchestration platform with full Temporal durability underneath.
+
+Adding a new activity to the library requires engineering. Composing existing activities into new workflows — or modifying existing ones — does not. This is the separation that makes the system genuinely useful: engineers define what's possible, and business teams define what actually runs.
 
 ## Spec compliance and open source
 
-Implementing a standard spec rather than a proprietary language was deliberate. It means:
+Implementing an open standard rather than a proprietary language was deliberate. Tooling exists, the mental model is documented, and the spec's structure enforced good abstractions in the engine design.
 
-- Tooling exists — editors, validators, visualizers — that works without custom builds
-- Workflows are portable in principle
-- The mental model is documented and shareable
-
-I maintain the Serverless Workflow Editor at FinBox — the UI that teams use to create and modify workflow definitions. I also actively contribute to the [Serverless Workflow Go SDK](https://github.com/serverlessworkflow/sdk-go), the open source library that handles spec parsing and validation. Contributions there improve not just FinBox's implementation but the broader ecosystem.
+I maintain the Serverless Workflow Editor at FinBox and actively contribute to the [Serverless Workflow Go SDK](https://github.com/serverlessworkflow/sdk-go), the open source library that handles spec parsing and validation.
 
 ## The hard parts
 
-The most interesting engineering challenge was mapping the Serverless Workflow spec's execution model cleanly onto Temporal's execution model. They're not identical. The spec has concepts — event-based transitions, parallel state execution, compensation flows — that require careful translation into Temporal's workflow and activity primitives.
+The most interesting engineering challenge was mapping the Serverless Workflow spec's execution model cleanly onto Temporal's. They're not identical — the spec has concepts like event-based transitions, parallel state execution, and compensation flows that require careful translation into Temporal's workflow and activity primitives.
 
 The second challenge was error semantics. The spec has a defined error handling model. Temporal has its own retry and error propagation model. Getting them to compose correctly — so that a workflow definition's error handling behavior is what actually executes — required working through a lot of edge cases.
 
 ## Relationship to DataDancer
 
-The Workflow Orchestration Platform and DataDancer solve related but distinct problems. DataDancer is for short-running, in-memory workflows where Temporal's overhead isn't justified — data transformations, ETL steps that complete in milliseconds. The orchestration platform is for durable, long-running business processes that need to survive failures and may wait hours or days for external events. The two coexist: DataDancer often runs as an activity within a larger Temporal workflow.
+The Workflow Orchestration Platform and DataDancer solve related but distinct problems. DataDancer is for short-running, in-memory workflows where Temporal's overhead isn't justified — data transformations, ETL steps that complete in milliseconds. This platform is for durable, long-running business processes that need to survive failures and may wait hours or days for external events. The two coexist: DataDancer often runs as an activity within a larger Temporal workflow.
 
 ---
 
-This project sits at the intersection of the two things I find most interesting: distributed systems (Temporal's execution model, failure handling, history replay) and language design (the DSL/spec that non-engineers interact with). Getting both right — reliable execution underneath, a clear and expressive definition layer on top — is what makes the platform actually useful.
+This project sits at the intersection of the two things I find most interesting: distributed systems (Temporal's execution model, failure handling, history replay) and the interface between engineers and the business (the canvas that lets non-developers compose and deploy logic without writing code). Getting both right is what makes it actually useful.
