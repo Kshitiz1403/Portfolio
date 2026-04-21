@@ -54,17 +54,6 @@ const experience = [
         tech: ['Go', 'React', 'PostgreSQL', 'Redis', 'Kafka', 'OpenTelemetry', 'AWS'],
       },
       {
-        slug: 'pickle',
-        name: 'Pickle',
-        description:
-          'gRPC microservice extracted from a legacy monolith to own configuration management across all tenants.',
-        highlights: [
-          '**Namespace-scoped isolation** lets each microservice own its config independently — zero coordination required between services',
-          '**gRPC microservice** with version control, scheduled activation, hierarchical RBAC, and a full audit log',
-        ],
-        tech: ['Go', 'gRPC', 'React', 'Terraform', 'Helm', 'PostgreSQL'],
-      },
-      {
         slug: 'firefly',
         name: 'Firefly',
         description:
@@ -74,6 +63,17 @@ const experience = [
           '**Pluggable queue backend** — backed by SQS and EventBridge Scheduler, designed for easy replacement',
         ],
         tech: ['Go', 'AWS SQS', 'EventBridge', 'OAuth'],
+      },
+      {
+        slug: 'pickle',
+        name: 'Pickle',
+        description:
+          'gRPC microservice extracted from a legacy monolith to own configuration management across all tenants.',
+        highlights: [
+          '**Namespace-scoped isolation** lets each microservice own its config independently — zero coordination required between services',
+          '**gRPC microservice** with version control, scheduled activation, hierarchical RBAC, and a full audit log',
+        ],
+        tech: ['Go', 'gRPC', 'React', 'Terraform', 'Helm', 'PostgreSQL'],
       }
     ],
   },
