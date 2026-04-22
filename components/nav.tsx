@@ -29,7 +29,7 @@ export default function Nav() {
           }
         }
       },
-      { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
+      { rootMargin: '-10% 0px -70% 0px', threshold: 0 }
     )
 
     for (const id of SECTIONS) {
