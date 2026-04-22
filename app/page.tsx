@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import TypewriterTitle from '@/components/typewriter-title'
 
 function boldify(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g)
@@ -106,13 +107,11 @@ export default function Home() {
     <div className="space-y-20">
       {/* Hero */}
       <section>
-        <h1 className="text-2xl font-semibold text-stone-900 dark:text-zinc-50 mb-2 tracking-tight">
+        <h1 className="text-2xl font-semibold mb-2 tracking-tight bg-gradient-to-r from-stone-900 via-stone-800 to-emerald-800 dark:from-zinc-50 dark:via-zinc-100 dark:to-emerald-300 bg-clip-text text-transparent">
           Kshitiz Agrawal
         </h1>
-        <p className="text-stone-500 dark:text-zinc-500 mb-6 text-sm font-mono">
-          Backend engineer · Distributed systems · Bengaluru, India
-        </p>
-        <p className="text-stone-600 dark:text-zinc-400 leading-relaxed mb-8 text-sm">
+        <TypewriterTitle />
+        <p className="text-stone-600 dark:text-zinc-400 leading-relaxed mb-8 text-sm border-l-2 border-emerald-600/30 dark:border-emerald-500/25 pl-4">
           Building reliable infrastructure at FinBox — internal proxies, workflow engines, webhook
           platforms. Interested in how systems fail and how to make them not.
         </p>
@@ -149,13 +148,13 @@ export default function Home() {
       </section>
 
       {/* Experience */}
-      <section>
+      <section id="experience">
         <h2 className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-8">
           Experience
         </h2>
         {experience.map((job) => (
           <div key={job.company}>
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between mb-8">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
               <div className="flex items-baseline gap-2">
                 <span className="text-base font-semibold text-stone-800 dark:text-zinc-100">{job.company}</span>
                 <span className="text-stone-400 dark:text-zinc-600 text-sm">·</span>
@@ -165,9 +164,9 @@ export default function Home() {
                 {job.location} · {job.period}
               </span>
             </div>
-            <div className="divide-y divide-stone-100 dark:divide-zinc-900">
+            <div className="divide-y divide-stone-100 dark:divide-zinc-900 mt-6">
               {job.projects.map((project) => (
-                <div key={project.name} className="py-8 first:pt-0">
+                <div key={project.name} className="py-8 px-6 -mx-6 rounded-lg hover:bg-stone-50 dark:hover:bg-zinc-900/50 hover:-translate-y-0.5 transition-all duration-200">
                   <Link
                     href={`/work/${project.slug}`}
                     className="group/link inline-flex items-center gap-1.5 text-base font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200 mb-1.5"
@@ -202,13 +201,13 @@ export default function Home() {
       </section>
 
       {/* Projects */}
-      <section>
+      <section id="projects">
         <h2 className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-8">
           Projects
         </h2>
         <div className="space-y-8">
           {projects.map((project) => (
-            <div key={project.name}>
+            <div key={project.name} className="px-4 -mx-4 py-4 rounded-lg hover:bg-stone-50 dark:hover:bg-zinc-900/50 hover:-translate-y-0.5 transition-all duration-200">
               <div className="flex items-baseline justify-between mb-2">
                 <Link
                   href={`/projects/${project.slug}`}
@@ -251,7 +250,7 @@ export default function Home() {
       </section>
 
       {/* Skills */}
-      <section>
+      <section id="skills">
         <h2 className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-8">
           Skills
         </h2>
