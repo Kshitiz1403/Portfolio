@@ -172,13 +172,13 @@ export default function Home() {
             <div className="divide-y divide-stone-100 dark:divide-zinc-900 mt-6">
               {job.projects.map((project, i) => (
                 <FadeIn key={project.name} delay={i * 80}>
-                  <div className="py-8 px-6 -mx-6 rounded-lg hover:bg-stone-50 dark:hover:bg-zinc-900/50 hover:-translate-y-0.5 transition-all duration-200">
+                  <div className="relative py-8 px-6 -mx-6 rounded-lg hover:bg-stone-50 dark:hover:bg-zinc-900/50 hover:-translate-y-0.5 transition-all duration-200">
                     <Link
                       href={`/work/${project.slug}`}
-                      className="group/link inline-flex items-center gap-1.5 text-base font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200 mb-1.5"
+                      className="inline-flex items-center gap-1.5 text-base font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200 mb-1.5 after:absolute after:inset-0 after:rounded-lg"
                     >
                       {project.name}
-                      <span className="text-stone-400 dark:text-zinc-700 group-hover/link:text-emerald-700 dark:group-hover/link:text-emerald-500 transition-colors duration-200 text-xs">↗</span>
+                      <span className="text-emerald-600 dark:text-emerald-500 text-xs">↗</span>
                     </Link>
                     <p className="text-sm text-stone-500 dark:text-zinc-600 leading-relaxed mb-3">{project.description}</p>
                     <ul className="space-y-2 mb-3">
@@ -214,14 +214,14 @@ export default function Home() {
         <div className="space-y-8">
           {projects.map((project, i) => (
             <FadeIn key={project.name} delay={i * 80}>
-              <div className="px-4 -mx-4 py-4 rounded-lg hover:bg-stone-50 dark:hover:bg-zinc-900/50 hover:-translate-y-0.5 transition-all duration-200">
+              <div className="relative px-4 -mx-4 py-4 rounded-lg hover:bg-stone-50 dark:hover:bg-zinc-900/50 hover:-translate-y-0.5 transition-all duration-200">
                 <div className="flex items-baseline justify-between mb-2">
                   <Link
                     href={`/projects/${project.slug}`}
-                    className="group/link inline-flex items-center gap-1.5 font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200"
+                    className="inline-flex items-center gap-1.5 font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200 after:absolute after:inset-0 after:rounded-lg"
                   >
                     {project.name}
-                    <span className="text-stone-400 dark:text-zinc-700 group-hover/link:text-emerald-700 dark:group-hover/link:text-emerald-500 transition-colors duration-200 text-xs">↗</span>
+                    <span className="text-emerald-600 dark:text-emerald-500 text-xs">↗</span>
                   </Link>
                   <span className="text-xs text-stone-400 dark:text-zinc-700 font-mono ml-4 shrink-0">
                     {project.period}
