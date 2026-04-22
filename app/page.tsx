@@ -181,11 +181,10 @@ export default function Home() {
                       <span className="text-stone-400 dark:text-zinc-700 group-hover/link:text-emerald-700 dark:group-hover/link:text-emerald-500 transition-colors duration-200 text-xs">↗</span>
                     </Link>
                     <p className="text-sm text-stone-500 dark:text-zinc-600 leading-relaxed mb-3">{project.description}</p>
-                    <ul className="space-y-1.5 mb-3">
+                    <ul className="space-y-2 mb-3">
                       {project.highlights.map((point, j) => (
-                        <li key={j} className="flex gap-2 text-sm text-stone-500 dark:text-zinc-600 leading-relaxed">
-                          <span className="text-stone-300 dark:text-zinc-700 shrink-0 select-none mt-px">—</span>
-                          <span>{boldify(point)}</span>
+                        <li key={j} className="text-sm text-stone-500 dark:text-zinc-600 leading-relaxed border-l border-stone-200 dark:border-zinc-800 pl-3">
+                          {boldify(point)}
                         </li>
                       ))}
                     </ul>
