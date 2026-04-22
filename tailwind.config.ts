@@ -16,11 +16,16 @@ const config: Config = {
       },
       animation: {
         blink: 'blink 1s step-end infinite',
+        'gradient-shift': 'gradient-shift 6s ease infinite',
       },
       keyframes: {
         blink: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0' },
+        },
+        'gradient-shift': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
         },
       },
     },
