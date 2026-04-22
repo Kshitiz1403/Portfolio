@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import Nav from '@/components/nav'
 import Footer from '@/components/footer'
 import ScrollProgress from '@/components/scroll-progress'
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>{children}</main>
           <Footer />
         </div>
+        <Analytics />
       </body>
     </html>
   )
