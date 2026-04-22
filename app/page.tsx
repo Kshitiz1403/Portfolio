@@ -228,7 +228,7 @@ export default function Home() {
                   </span>
                 </div>
                 <p className="text-sm text-stone-500 dark:text-zinc-600 leading-relaxed mb-3">{project.description}</p>
-                <div className="flex items-center gap-4 mb-3">
+                <div className="relative z-10 flex items-center gap-4 mb-3">
                   {project.links.map((link) => (
                     <a
                       key={link.label}
