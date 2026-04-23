@@ -109,43 +109,48 @@ export default function Home() {
       {/* Hero */}
       <FadeIn>
         <section>
-          <h1 className="text-2xl font-semibold mb-2 tracking-tight bg-gradient-to-r from-stone-900 via-emerald-700 to-stone-900 dark:from-zinc-50 dark:via-emerald-300 dark:to-zinc-100 bg-clip-text text-transparent [background-size:200%_100%] animate-gradient-shift">
+          <div className="inline-flex items-center gap-2 skill-pill text-xs font-mono text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
+            Backend Engineer · FinBox
+          </div>
+          <h1 className="text-4xl font-bold mb-3 tracking-tight bg-gradient-to-r from-stone-900 via-emerald-700 to-stone-900 dark:from-zinc-50 dark:via-emerald-300 dark:to-zinc-100 bg-clip-text text-transparent [background-size:200%_100%] animate-gradient-shift">
             Kshitiz Agrawal
           </h1>
-          <TypewriterTitle />
+          <p className="text-sm font-mono text-stone-400 dark:text-zinc-600 mb-6 tracking-wide">
+            Backend engineer · Distributed systems · Bengaluru, India
+          </p>
           <p className="text-stone-600 dark:text-zinc-400 leading-relaxed mb-8 text-sm border-l-2 border-emerald-600/30 dark:border-emerald-500/25 pl-4">
             Building reliable infrastructure at FinBox — internal proxies, workflow engines, webhook
             platforms. Interested in how systems fail and how to make them not.
           </p>
-          <div className="flex items-center gap-5 text-sm">
-            <a
-              href="https://github.com/Kshitiz1403"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-stone-500 dark:text-zinc-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors duration-200"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://linkedin.com/in/kshitizagrawal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-stone-500 dark:text-zinc-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors duration-200"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="mailto:kshitizagrawal@outlook.com"
-              className="text-stone-500 dark:text-zinc-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors duration-200"
-            >
-              Email
-            </a>
-            <a
-              href="/resume"
-              className="text-stone-500 dark:text-zinc-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors duration-200"
-            >
-              Resume
-            </a>
+          <div className="flex items-stretch divide-x divide-stone-200 dark:divide-zinc-800 mb-8">
+            {[
+              { value: '2+', label: 'years at FinBox' },
+              { value: 'Go', label: 'primary language' },
+              { value: 'BLR', label: 'Bengaluru, India' },
+            ].map(({ value, label }) => (
+              <div key={label} className="flex flex-col px-5 first:pl-0 last:pr-0">
+                <span className="text-xl font-bold text-stone-800 dark:text-zinc-100">{value}</span>
+                <span className="text-xs text-stone-400 dark:text-zinc-600 mt-0.5">{label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            {[
+              { label: 'GitHub', href: 'https://github.com/Kshitiz1403', external: true },
+              { label: 'LinkedIn', href: 'https://linkedin.com/in/kshitizagrawal', external: true },
+              { label: 'Email', href: 'mailto:kshitizagrawal@outlook.com', external: false },
+              { label: 'Resume', href: '/resume', external: false },
+            ].map(({ label, href, external }) => (
+              <a
+                key={label}
+                href={href}
+                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                className="text-xs font-mono text-stone-500 dark:text-zinc-500 border border-stone-200 dark:border-zinc-800 rounded px-3 py-1.5 hover:border-emerald-600/50 dark:hover:border-emerald-500/40 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all duration-200"
+              >
+                {label}
+              </a>
+            ))}
           </div>
         </section>
       </FadeIn>
