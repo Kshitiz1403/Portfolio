@@ -122,6 +122,16 @@
     background: rgb(52 211 153 / 0.4);
   }
 
+  /* Dot-grid hero texture */
+  .dot-bg {
+    background-image: radial-gradient(circle, rgb(120 113 108 / 0.22) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  .dark .dot-bg {
+    background-image: radial-gradient(circle, rgb(161 161 170 / 0.09) 1px, transparent 1px);
+  }
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .fade-in-up {

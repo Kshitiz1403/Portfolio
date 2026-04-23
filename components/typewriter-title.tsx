@@ -20,7 +20,7 @@ export default function TypewriterTitle() {
   }, [displayed])
 
   return (
-    <p className="text-stone-500 dark:text-zinc-500 mb-6 text-sm font-mono">
+    <p className="text-stone-500 dark:text-zinc-500 mb-6 text-base font-mono">
       {displayed}
       <span
         className={`inline-block w-px h-[0.85em] bg-emerald-600 dark:bg-emerald-400 ml-0.5 align-middle${

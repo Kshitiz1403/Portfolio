@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ThemeToggle from '@/components/theme-toggle'
 
-const SECTIONS = ['experience', 'projects', 'skills']
+const SECTIONS = ['experience', 'projects', 'skills', 'writing']
 
 export default function Nav() {
   const pathname = usePathname()
@@ -50,7 +50,7 @@ export default function Nav() {
   }
 
   return (
-    <nav className="sticky top-0 z-10 flex items-center justify-between mb-20 -mx-6 px-6 py-4 bg-[#faf8f5]/90 dark:bg-zinc-950/90 backdrop-blur-sm">
+    <nav className="sticky top-0 z-10 flex items-center justify-between mb-6 -mx-6 px-6 py-4 bg-[#faf8f5]/90 dark:bg-zinc-950/90 backdrop-blur-sm">
       <div className="flex items-center gap-1.5 font-mono text-sm">
         <Link
           href="/"
