@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<'dark' | 'light' | null>(null)
+  const [spinning, setSpinning] = useState(false)
 
   useEffect(() => {
     setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light')
@@ -11,6 +12,8 @@ export default function ThemeToggle() {
 
   function toggle() {
     const next = theme === 'dark' ? 'light' : 'dark'
+    setSpinning(true)
+    setTimeout(() => setSpinning(false), 300)
     setTheme(next)
     document.documentElement.classList.toggle('dark', next === 'dark')
     localStorage.setItem('theme', next)
@@ -25,6 +28,7 @@ export default function ThemeToggle() {
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       className="text-stone-400 dark:text-zinc-600 hover:text-stone-700 dark:hover:text-zinc-300 transition-colors duration-200"
     >
+      <span className={`inline-block transition-transform duration-300 ${spinning ? 'rotate-180' : 'rotate-0'}`}>
       {theme === 'dark' ? (
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="5" />
@@ -42,6 +46,7 @@ export default function ThemeToggle() {
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       )}
+      </span>
     </button>
   )
 }

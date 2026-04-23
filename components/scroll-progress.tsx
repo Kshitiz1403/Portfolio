@@ -20,7 +20,7 @@ export default function ScrollProgress() {
     <div
       aria-hidden="true"
       style={{ width: `${progress}%` }}
-      className="fixed top-0 left-0 h-[2px] z-50 bg-emerald-600 dark:bg-emerald-400"
+      className="fixed top-0 left-0 h-[2px] z-50 bg-emerald-600 dark:bg-emerald-400 transition-[width] duration-75 ease-out"
     />
   )
 }
