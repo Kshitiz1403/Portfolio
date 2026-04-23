@@ -50,7 +50,7 @@ export default function Nav() {
   }
 
   return (
-    <nav className="sticky top-0 z-10 flex items-center justify-between mb-20 -mx-6 px-6 py-4 bg-[#faf8f5]/90 dark:bg-zinc-950/90 backdrop-blur-sm">
+    <nav className="sticky top-0 z-10 flex items-center justify-between mb-20 -mx-6 px-6 py-4 bg-[#faf8f5]/90 dark:bg-zinc-950/90 backdrop-blur-sm transition-colors duration-200">
       <div className="flex items-center gap-1.5 font-mono text-sm">
         <Link
           href="/"
