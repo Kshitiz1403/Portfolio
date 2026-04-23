@@ -169,7 +169,7 @@ export default function Home() {
                 </span>
               </div>
             </FadeIn>
-            <div className="divide-y divide-stone-100 dark:divide-zinc-900 mt-6">
+            <div className="divide-y divide-stone-200 dark:divide-zinc-800 mt-6">
               {job.projects.map((project, i) => (
                 <FadeIn key={project.name} delay={i * 80}>
                   <div className="relative py-8 px-6 -mx-6 rounded-lg hover:bg-stone-50 dark:hover:bg-zinc-900/50 hover:-translate-y-0.5 transition-all duration-200">
@@ -183,7 +183,7 @@ export default function Home() {
                     <p className="text-sm text-stone-500 dark:text-zinc-600 leading-relaxed mb-3">{project.description}</p>
                     <ul className="space-y-2 mb-3">
                       {project.highlights.map((point, j) => (
-                        <li key={j} className="text-sm text-stone-500 dark:text-zinc-600 leading-relaxed border-l border-stone-200 dark:border-zinc-800 pl-3">
+                        <li key={j} className="text-sm text-stone-500 dark:text-zinc-600 leading-relaxed border-l border-emerald-600 dark:border-zinc-700 pl-3">
                           {boldify(point)}
                         </li>
                       ))}
@@ -192,7 +192,7 @@ export default function Home() {
                       {project.tech.map((t) => (
                         <span
                           key={t}
-                          className="text-xs font-mono text-stone-500 dark:text-zinc-600 bg-stone-100 dark:bg-zinc-900 px-2 py-0.5 rounded ring-1 ring-transparent hover:ring-emerald-500/40 dark:hover:ring-emerald-400/30 hover:scale-105 hover:text-stone-700 dark:hover:text-zinc-400 transition-all duration-150 cursor-default select-none"
+                          className="skill-pill text-xs font-mono text-stone-500 dark:text-zinc-600 px-2 py-0.5 rounded hover:scale-105 hover:text-stone-700 dark:hover:text-zinc-400 transition-all duration-150 cursor-default select-none"
                         >
                           {t}
                         </span>
@@ -245,7 +245,7 @@ export default function Home() {
                   {project.tech.map((t) => (
                     <span
                       key={t}
-                      className="text-xs font-mono text-stone-500 dark:text-zinc-600 bg-stone-100 dark:bg-zinc-900 px-2 py-0.5 rounded ring-1 ring-transparent hover:ring-emerald-500/40 dark:hover:ring-emerald-400/30 hover:scale-105 hover:text-stone-700 dark:hover:text-zinc-400 transition-all duration-150 cursor-default select-none"
+                      className="skill-pill text-xs font-mono text-stone-500 dark:text-zinc-600 px-2 py-0.5 rounded hover:scale-105 hover:text-stone-700 dark:hover:text-zinc-400 transition-all duration-150 cursor-default select-none"
                     >
                       {t}
                     </span>
@@ -262,7 +262,7 @@ export default function Home() {
         <h2 className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-8">
           <FadeIn as="span" className="heading-reveal">Skills</FadeIn>
         </h2>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {Object.entries(skills).map(([category, items], i) => (
             <FadeIn key={category} delay={i * 60}>
               <div className="flex gap-6">

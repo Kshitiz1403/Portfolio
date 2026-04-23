@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@property --border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes border-spin {
+  to { --border-angle: 360deg; }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -122,6 +132,21 @@
     background: rgb(52 211 153 / 0.4);
   }
 
+  /* Skill pill animated border */
+  .skill-pill {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(#f5f5f4, #f5f5f4) padding-box,
+      conic-gradient(from var(--border-angle), transparent 70%, rgb(5 150 105 / 0.65) 84%, rgb(16 185 129 / 0.85) 90%, rgb(5 150 105 / 0.65) 96%, transparent 100%) border-box;
+    animation: border-spin 4s linear infinite;
+  }
+
+  .dark .skill-pill {
+    background:
+      linear-gradient(#18181b, #18181b) padding-box,
+      conic-gradient(from var(--border-angle), transparent 70%, rgb(52 211 153 / 0.4) 84%, rgb(110 231 183 / 0.6) 90%, rgb(52 211 153 / 0.4) 96%, transparent 100%) border-box;
+  }
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .fade-in-up {
@@ -137,6 +162,17 @@
 
     .animate-gradient-shift {
       animation: none;
+    }
+
+    .skill-pill {
+      animation: none;
+      background: #f5f5f4;
+      border-color: rgb(5 150 105 / 0.2);
+    }
+
+    .dark .skill-pill {
+      background: #18181b;
+      border-color: rgb(52 211 153 / 0.15);
     }
   }
 }
