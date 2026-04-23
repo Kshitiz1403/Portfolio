@@ -1,6 +1,9 @@
+'use client'
+
 import Link from 'next/link'
 import TypewriterTitle from '@/components/typewriter-title'
 import FadeIn from '@/components/fade-in'
+import posthog from 'posthog-js'
 
 function boldify(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g)
@@ -146,6 +149,7 @@ export default function Home() {
                 key={label}
                 href={href}
                 {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                onClick={() => posthog.capture('social_link_clicked', { label })}
                 className="text-xs font-mono text-stone-500 dark:text-zinc-500 border border-stone-200 dark:border-zinc-800 rounded px-3 py-1.5 hover:border-emerald-600/50 dark:hover:border-emerald-500/40 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all duration-200"
               >
                 {label}
@@ -180,6 +184,7 @@ export default function Home() {
                   <div className="relative py-8 px-6 -mx-6 rounded-lg hover:bg-stone-50 dark:hover:bg-zinc-900/50 hover:-translate-y-0.5 transition-all duration-200">
                     <Link
                       href={`/work/${project.slug}`}
+                      onClick={() => posthog.capture('work_project_clicked', { project_name: project.name, project_slug: project.slug, company: job.company })}
                       className="inline-flex items-center gap-1.5 text-base font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200 mb-1.5 after:absolute after:inset-0 after:rounded-lg"
                     >
                       {project.name}
@@ -223,6 +228,7 @@ export default function Home() {
                 <div className="flex items-baseline justify-between mb-2">
                   <Link
                     href={`/projects/${project.slug}`}
+                    onClick={() => posthog.capture('open_source_project_clicked', { project_name: project.name, project_slug: project.slug })}
                     className="inline-flex items-center gap-1.5 font-medium text-stone-800 dark:text-zinc-200 hover:text-stone-900 dark:hover:text-zinc-50 transition-colors duration-200 after:absolute after:inset-0 after:rounded-lg"
                   >
                     {project.name}
@@ -240,6 +246,7 @@ export default function Home() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => posthog.capture('external_project_link_clicked', { project_name: project.name, link_label: link.label, link_href: link.href })}
                       className="text-xs text-emerald-700 dark:text-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-200"
                     >
                       {link.label} ↗

@@ -2,6 +2,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import { getPost, getAllSlugs } from '@/lib/blog'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import PostHogCapture from '@/components/posthog-capture'
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }))
@@ -27,6 +28,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
     return (
       <div>
+        <PostHogCapture event="blog_post_viewed" properties={{ post_slug: slug, post_title: meta.title, reading_time: readingTime }} />
         <Link
           href="/blog"
           className="text-xs text-stone-400 dark:text-zinc-700 hover:text-stone-600 dark:hover:text-zinc-400 transition-colors duration-200 mb-12 block"
