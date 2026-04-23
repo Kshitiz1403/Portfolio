@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import posthog from 'posthog-js'
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<'dark' | 'light' | null>(null)
@@ -17,6 +18,7 @@ export default function ThemeToggle() {
     setTheme(next)
     document.documentElement.classList.toggle('dark', next === 'dark')
     localStorage.setItem('theme', next)
+    posthog.capture('theme_toggled', { theme: next })
   }
 
   // Render placeholder to avoid layout shift before hydration
