@@ -172,6 +172,7 @@ export default async function Home() {
               <div className="text-xs text-stone-500 dark:text-zinc-500 mt-1">Bengaluru, India</div>
             </div>
           </div>
+          
 
           {/* Social links as bordered buttons */}
           <div className="flex flex-wrap items-center gap-2.5">
