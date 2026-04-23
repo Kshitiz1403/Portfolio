@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ThemeToggle from '@/components/theme-toggle'
+import posthog from 'posthog-js'
 
 const SECTIONS = ['experience', 'projects', 'skills']
 
@@ -65,12 +66,13 @@ export default function Nav() {
         )}
       </div>
       <div className="flex items-center gap-6">
-        <Link href="/blog" className={linkClass('/blog')}>
+        <Link href="/blog" className={linkClass('/blog')} onClick={() => posthog.capture('nav_link_clicked', { label: 'writing', href: '/blog' })}>
           writing
         </Link>
         <a
           href="/resume"
           className="text-sm text-stone-500 dark:text-zinc-500 hover:text-stone-800 dark:hover:text-zinc-200 transition-colors duration-200"
+          onClick={() => posthog.capture('nav_link_clicked', { label: 'resume', href: '/resume' })}
         >
           resume
         </a>
