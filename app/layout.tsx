@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="bg-[#faf8f5] dark:bg-zinc-950 text-stone-900 dark:text-zinc-100 antialiased font-sans transition-colors duration-200">
         <ScrollProgress />
-        <div className="mx-auto max-w-2xl px-6 py-16">
+        <div className="mx-auto max-w-3xl px-6 py-16">
           <Nav />
           <main>{children}</main>
           <Footer />
