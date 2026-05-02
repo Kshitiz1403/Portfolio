@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import TypewriterTitle from '@/components/typewriter-title'
 import FadeIn from '@/components/fade-in'
@@ -99,6 +100,29 @@ const projects = [
   },
 ]
 
+const faqs = [
+  {
+    question: 'What opportunities are you open to?',
+    answer:
+      'Full-time backend engineering roles focused on distributed systems, infrastructure, or developer tooling. Open to remote or Bengaluru-based positions. Not looking for frontend-heavy or management tracks.',
+  },
+  {
+    question: 'What does your ideal role look like?',
+    answer:
+      'A small, focused team working on hard infrastructure problems — Go-first codebase, meaningful system design decisions, and the autonomy to own things end-to-end.',
+  },
+  {
+    question: 'Are you available for consulting?',
+    answer:
+      'Selectively. I take on short-term engagements for backend architecture reviews, reliability audits, or Go mentoring. Reach out and we can see if it\'s a good fit.',
+  },
+  {
+    question: 'What\'s your engineering philosophy?',
+    answer:
+      'Systems should fail gracefully and loudly. I prefer boring, observable, and replaceable over clever. If it can\'t be debugged at 2am, it shouldn\'t be in production.',
+  },
+]
+
 const skills: Record<string, string[]> = {
   Languages: ['Go', 'TypeScript', 'JavaScript', 'Java', 'Python'],
   Infrastructure: ['Kubernetes', 'Docker', 'Terraform', 'Helm', 'AWS', 'Azure'],
@@ -107,25 +131,66 @@ const skills: Record<string, string[]> = {
 }
 
 export default function Home() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
   return (
     <div className="space-y-20">
       {/* Hero */}
       <FadeIn>
         <section>
-          <div className="inline-flex items-center gap-2 skill-pill text-xs font-mono text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-            Backend Engineer · FinBox
+          {/* Mobile: photo on left fills space, name on right */}
+          <div className="flex items-center gap-4 mb-6 sm:hidden">
+            <img
+              src="/photo.png"
+              alt="Kshitiz Agrawal"
+              className="flex-1 min-w-0 rounded-xl object-cover object-center"
+            />
+            <div className="flex flex-col justify-center gap-2 shrink-0">
+              <div className="inline-flex items-center gap-2 skill-pill text-xs font-mono text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
+                Backend Engineer · FinBox
+              </div>
+              <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-stone-900 via-emerald-700 to-stone-900 dark:from-zinc-50 dark:via-emerald-300 dark:to-zinc-100 bg-clip-text text-transparent [background-size:200%_100%] animate-gradient-shift">
+                Kshitiz Agrawal
+              </h1>
+            </div>
           </div>
-          <h1 className="text-4xl font-bold mb-3 tracking-tight bg-gradient-to-r from-stone-900 via-emerald-700 to-stone-900 dark:from-zinc-50 dark:via-emerald-300 dark:to-zinc-100 bg-clip-text text-transparent [background-size:200%_100%] animate-gradient-shift">
-            Kshitiz Agrawal
-          </h1>
-          <p className="text-sm font-mono text-stone-400 dark:text-zinc-600 mb-6 tracking-wide">
-            Backend engineer · Distributed systems · Bengaluru, India
-          </p>
-          <p className="text-stone-600 dark:text-zinc-400 leading-relaxed mb-8 text-sm border-l-2 border-emerald-600/30 dark:border-emerald-500/25 pl-4">
-            Building reliable infrastructure at FinBox — internal proxies, workflow engines, webhook
-            platforms. Interested in how systems fail and how to make them not.
-          </p>
+
+          {/* Desktop: large photo left, full text right */}
+          <div className="hidden sm:flex items-center gap-6">
+            <img
+              src="/photo.png"
+              alt="Kshitiz Agrawal"
+              className="w-64 h-64 rounded-2xl object-cover shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+              <div className="inline-flex items-center gap-2 skill-pill text-xs font-mono text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
+                Backend Engineer · FinBox
+              </div>
+              <h1 className="text-4xl font-bold mb-3 tracking-tight bg-gradient-to-r from-stone-900 via-emerald-700 to-stone-900 dark:from-zinc-50 dark:via-emerald-300 dark:to-zinc-100 bg-clip-text text-transparent [background-size:200%_100%] animate-gradient-shift">
+                Kshitiz Agrawal
+              </h1>
+              <p className="text-sm font-mono text-stone-400 dark:text-zinc-600 mb-6 tracking-wide">
+                Backend engineer · Distributed systems · Bengaluru, India
+              </p>
+              <p className="text-stone-600 dark:text-zinc-400 leading-relaxed mb-8 text-sm border-l-2 border-emerald-600/30 dark:border-emerald-500/25 pl-4">
+                Building reliable infrastructure at FinBox — internal proxies, workflow engines, webhook
+                platforms. Interested in how systems fail and how to make them not.
+              </p>
+            </div>
+          </div>
+
+          {/* Mobile-only: subtitle + bio */}
+          <div className="sm:hidden">
+            <p className="text-sm font-mono text-stone-400 dark:text-zinc-600 mb-6 tracking-wide">
+              Backend engineer · Distributed systems · Bengaluru, India
+            </p>
+            <p className="text-stone-600 dark:text-zinc-400 leading-relaxed mb-8 text-sm border-l-2 border-emerald-600/30 dark:border-emerald-500/25 pl-4">
+              Building reliable infrastructure at FinBox — internal proxies, workflow engines, webhook
+              platforms. Interested in how systems fail and how to make them not.
+            </p>
+          </div>
           <div className="flex items-stretch divide-x divide-stone-200 dark:divide-zinc-800 mb-8">
             {[
               { value: '2+', label: 'years at FinBox' },
@@ -155,6 +220,15 @@ export default function Home() {
                 {label}
               </a>
             ))}
+            <a
+              href="https://cal.com/kshitizagrawal"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => posthog.capture('book_call_clicked')}
+              className="text-xs font-mono text-stone-500 dark:text-zinc-500 border border-stone-200 dark:border-zinc-800 rounded px-3 py-1.5 hover:border-emerald-600/50 dark:hover:border-emerald-500/40 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all duration-200"
+            >
+              Book a call →
+            </a>
           </div>
         </section>
       </FadeIn>
@@ -283,6 +357,39 @@ export default function Home() {
                   {items.join(' · ')}
                 </p>
               </div>
+            </FadeIn>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq">
+        <h2 className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-8">
+          <FadeIn as="span" className="heading-reveal">Questions</FadeIn>
+        </h2>
+        <div className="divide-y divide-stone-200 dark:divide-zinc-800">
+          {faqs.map((item, i) => (
+            <FadeIn key={i} delay={i * 60}>
+              <button
+                className="w-full text-left py-4 flex items-start justify-between gap-4 group cursor-pointer"
+                onClick={() => {
+                  const next = openFaq === i ? null : i
+                  setOpenFaq(next)
+                  if (next !== null) posthog.capture('faq_item_expanded', { question: item.question })
+                }}
+              >
+                <span className="text-sm text-stone-700 dark:text-zinc-300 group-hover:text-stone-900 dark:group-hover:text-zinc-100 transition-colors duration-200">
+                  {item.question}
+                </span>
+                <span className="text-emerald-600 dark:text-emerald-500 font-mono text-sm shrink-0 mt-0.5 select-none">
+                  {openFaq === i ? '−' : '+'}
+                </span>
+              </button>
+              {openFaq === i && (
+                <p className="text-sm text-stone-500 dark:text-zinc-500 leading-relaxed pb-4 pr-8">
+                  {item.answer}
+                </p>
+              )}
             </FadeIn>
           ))}
         </div>
