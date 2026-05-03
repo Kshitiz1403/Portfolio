@@ -1,7 +1,8 @@
 import { ImageResponse } from 'next/og'
+import config from '@/site.config'
 
 export const runtime = 'edge'
-export const alt = 'Kshitiz Agrawal — Backend engineer. Distributed systems.'
+export const alt = `${config.site.name} — ${config.site.description}`
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -29,7 +30,7 @@ export default function OGImage() {
             marginBottom: '24px',
           }}
         >
-          kshitizagrawal.in
+          {config.site.url.replace('https://', '')}
         </div>
         <div
           style={{
@@ -41,7 +42,7 @@ export default function OGImage() {
             marginBottom: '20px',
           }}
         >
-          Kshitiz Agrawal
+          {config.site.name}
         </div>
         <div
           style={{
@@ -50,7 +51,7 @@ export default function OGImage() {
             fontFamily: 'monospace',
           }}
         >
-          Backend engineer · Distributed systems · Bengaluru
+          {config.hero.subtitle}
         </div>
       </div>
     ),

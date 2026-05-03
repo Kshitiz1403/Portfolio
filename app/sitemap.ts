@@ -1,8 +1,9 @@
 import { getAllPosts } from '@/lib/blog'
 import { getAllWorkSlugs } from '@/lib/work'
 import { getAllProjectSlugs } from '@/lib/projects'
+import config from '@/site.config'
 
-const BASE_URL = 'https://kshitizagrawal.in'
+const BASE_URL = config.site.url
 
 export default function sitemap() {
   const posts = getAllPosts().map((post) => ({

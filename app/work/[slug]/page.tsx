@@ -3,6 +3,7 @@ import { getWork, getAllWorkSlugs } from '@/lib/work'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import PostHogCapture from '@/components/posthog-capture'
+import config from '@/site.config'
 
 export async function generateStaticParams() {
   return getAllWorkSlugs().map((slug) => ({ slug }))
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params
     const { meta } = getWork(slug)
     return {
-      title: `${meta.title} — Kshitiz Agrawal`,
+      title: `${meta.title} — ${config.site.name}`,
       description: meta.description,
     }
   } catch {
@@ -38,7 +39,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
 
         <header className="mb-12">
           <p className="text-xs font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest mb-4">
-            FinBox · {meta.period}
+            {config.site.company} · {meta.period}
           </p>
           <h1 className="text-xl font-semibold text-stone-900 dark:text-zinc-50 mb-3 leading-snug tracking-tight">
             {meta.title}

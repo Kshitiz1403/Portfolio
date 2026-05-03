@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import Nav from '@/components/nav'
 import Footer from '@/components/footer'
 import ScrollProgress from '@/components/scroll-progress'
+import config from '@/site.config'
 import './globals.css'
 
 const inter = Inter({
@@ -19,29 +20,26 @@ const mono = JetBrains_Mono({
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Kshitiz Agrawal',
-  jobTitle: 'Backend Engineer',
-  url: 'https://kshitizagrawal.in',
-  sameAs: [
-    'https://github.com/Kshitiz1403',
-    'https://linkedin.com/in/kshitizagrawal',
-  ],
-  knowsAbout: ['Go', 'Distributed Systems', 'Kubernetes', 'Temporal', 'gRPC'],
-  worksFor: { '@type': 'Organization', name: 'FinBox' },
-  address: { '@type': 'PostalAddress', addressLocality: 'Bengaluru', addressCountry: 'IN' },
+  name: config.site.name,
+  jobTitle: config.site.jobTitle,
+  url: config.site.url,
+  sameAs: config.site.sameAs,
+  knowsAbout: config.site.knowsAbout,
+  worksFor: { '@type': 'Organization', name: config.site.company },
+  address: { '@type': 'PostalAddress', addressLocality: config.site.city, addressCountry: config.site.country },
 }
 
 export const metadata: Metadata = {
-  title: 'Kshitiz Agrawal',
-  description: 'Backend engineer. Distributed systems.',
+  title: config.site.title,
+  description: config.site.description,
   openGraph: {
-    title: 'Kshitiz Agrawal',
-    description: 'Backend engineer. Distributed systems.',
-    url: 'https://kshitizagrawal.in',
-    siteName: 'Kshitiz Agrawal',
+    title: config.site.title,
+    description: config.site.description,
+    url: config.site.url,
+    siteName: config.site.name,
     type: 'website',
   },
-  metadataBase: new URL('https://kshitizagrawal.in'),
+  metadataBase: new URL(config.site.url),
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

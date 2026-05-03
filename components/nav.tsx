@@ -5,8 +5,9 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ThemeToggle from '@/components/theme-toggle'
 import posthog from 'posthog-js'
+import config from '@/site.config'
 
-const SECTIONS = ['experience', 'projects', 'skills']
+const { links: navLinks, sections } = config.nav
 
 export default function Nav() {
   const pathname = usePathname()
@@ -22,7 +23,7 @@ export default function Nav() {
           if (entry.isIntersecting) {
             setActiveSection(entry.target.id)
           } else if (
-            entry.target.id === SECTIONS[0] &&
+            entry.target.id === sections[0] &&
             entry.boundingClientRect.top > 0
           ) {
             // First section scrolled back above the trigger band — clear the label
@@ -33,7 +34,7 @@ export default function Nav() {
       { rootMargin: '-10% 0px -70% 0px', threshold: 0 }
     )
 
-    for (const id of SECTIONS) {
+    for (const id of sections) {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
     }
@@ -57,7 +58,7 @@ export default function Nav() {
           href="/"
           className="text-stone-900 dark:text-zinc-50 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors duration-200"
         >
-          kshitiz.
+          {config.site.logo}
         </Link>
         {isHome && activeSection && (
           <span className="text-stone-400 dark:text-zinc-600 transition-all duration-300 select-none">
@@ -66,16 +67,16 @@ export default function Nav() {
         )}
       </div>
       <div className="flex items-center gap-6">
-        <Link href="/blog" className={linkClass('/blog')} onClick={() => posthog.capture('nav_link_clicked', { label: 'writing', href: '/blog' })}>
-          writing
-        </Link>
-        <a
-          href="/resume"
-          className="text-sm text-stone-500 dark:text-zinc-500 hover:text-stone-800 dark:hover:text-zinc-200 transition-colors duration-200"
-          onClick={() => posthog.capture('nav_link_clicked', { label: 'resume', href: '/resume' })}
-        >
-          resume
-        </a>
+        {navLinks.map((link) => (
+          <Link
+            key={link.label}
+            href={link.href}
+            className={linkClass(link.href)}
+            onClick={() => posthog.capture('nav_link_clicked', { label: link.label, href: link.href })}
+          >
+            {link.label}
+          </Link>
+        ))}
         <ThemeToggle />
       </div>
     </nav>
