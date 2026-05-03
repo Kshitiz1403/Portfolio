@@ -1,8 +1,9 @@
 import { getAllPosts } from '@/lib/blog'
 import BlogList from '@/components/blog-list'
+import config from '@/site.config'
 
 export const metadata = {
-  title: 'Writing — Kshitiz Agrawal',
+  title: `Writing — ${config.site.name}`,
   description: 'Thoughts on distributed systems, infrastructure, and engineering.',
 }
 

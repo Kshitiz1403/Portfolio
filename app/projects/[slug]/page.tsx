@@ -3,6 +3,7 @@ import { getProject, getAllProjectSlugs } from '@/lib/projects'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import PostHogCapture from '@/components/posthog-capture'
+import config from '@/site.config'
 
 export async function generateStaticParams() {
   return getAllProjectSlugs().map((slug) => ({ slug }))
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params
     const { meta } = getProject(slug)
     return {
-      title: `${meta.title} — Kshitiz Agrawal`,
+      title: `${meta.title} — ${config.site.name}`,
       description: meta.description,
     }
   } catch {

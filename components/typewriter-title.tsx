@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import config from '@/site.config'
 
-const FULL_TEXT = 'Backend engineer · Distributed systems · Bengaluru, India'
+const FULL_TEXT = config.hero.subtitle
 
 export default function TypewriterTitle() {
   const [displayed, setDisplayed] = useState('')

@@ -5,6 +5,9 @@ import Link from 'next/link'
 import TypewriterTitle from '@/components/typewriter-title'
 import FadeIn from '@/components/fade-in'
 import posthog from 'posthog-js'
+import config from '@/site.config'
+
+const { experience, projects, faqs, skills, hero } = config
 
 function boldify(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g)
@@ -19,116 +22,6 @@ function boldify(text: string) {
   )
 }
 
-const experience = [
-  {
-    company: 'FinBox',
-    role: 'Backend Engineer',
-    period: 'Jan 2024 – Present',
-    location: 'Bengaluru',
-    projects: [
-      {
-        slug: 'datadancer',
-        name: 'DataDancer',
-        description:
-          'Go library implementing the Serverless Workflow Specification for in-memory, short-running workflows.',
-        highlights: [
-          'Implemented the **Serverless Workflow Specification** in pure **Go** — no Temporal, no external orchestration',
-          'Powers **ETL pipelines** across 4+ microservices at FinBox with a config-driven JSON transformation engine',
-        ],
-        tech: ['Go', 'Serverless Workflow', 'OpenTelemetry'],
-      },
-      {
-        slug: 'workflow-orchestration-platform',
-        name: 'Workflow Orchestration Platform',
-        description:
-          'Temporal-based orchestrator that parses Serverless Workflow specs and executes durable business workflows.',
-        highlights: [
-          'Core developer on one of FinBox\'s most critical platforms — a **Temporal-based orchestrator** executing durable business workflows',
-          'Built a **no-code canvas** where non-developers stitch together activities to define and deploy workflows without engineering involvement',
-        ],
-        tech: ['Go', 'Temporal', 'Serverless Workflow'],
-      },
-      {
-        slug: 'octopus-octodash',
-        name: 'Octopus & OctoDash',
-        description:
-          'Internal HTTP proxy with a custom DSL for declarative configuration of encryption, auth flows, and routing.',
-        highlights: [
-          'Designed a **custom DSL** covering encryption, auth flows, and routing — replacing hand-rolled middleware per service',
-          'Implemented **adaptive vendor selection** with real-time performance metrics and automatic failover',
-        ],
-        tech: ['Go', 'React', 'PostgreSQL', 'Redis', 'Kafka', 'OpenTelemetry', 'AWS'],
-      },
-      {
-        slug: 'firefly',
-        name: 'Firefly',
-        description:
-          'Multi-tenant webhook delivery platform with configurable retry strategies and dead letter queues.',
-        highlights: [
-          'Multi-tenant **webhook delivery** with per-tenant configurable **retry strategies** and dead letter queue handling',
-          '**Pluggable queue backend** — backed by SQS and EventBridge Scheduler, designed for easy replacement',
-        ],
-        tech: ['Go', 'AWS SQS', 'EventBridge', 'OAuth'],
-      },
-      {
-        slug: 'pickle',
-        name: 'Pickle',
-        description:
-          'gRPC microservice extracted from a legacy monolith to own configuration management across all tenants.',
-        highlights: [
-          '**Namespace-scoped isolation** lets each microservice own its config independently — zero coordination required between services',
-          '**gRPC microservice** with version control, scheduled activation, hierarchical RBAC, and a full audit log',
-        ],
-        tech: ['Go', 'gRPC', 'React', 'Terraform', 'Helm', 'PostgreSQL'],
-      }
-    ],
-  },
-]
-
-const projects = [
-  {
-    slug: 'collaborative-ide',
-    name: 'Collaborative IDE',
-    period: '2022',
-    description:
-      'Real-time code editor with CRDT-based conflict resolution, Docker-sandboxed execution, and LSP-powered autocomplete. Supports NodeJS, Python, C++, and Java.',
-    links: [
-      { label: 'Live', href: 'https://ide.kshitizagrawal.in' },
-      { label: 'GitHub', href: 'https://github.com/Kshitiz1403/Collaborative-IDE' },
-    ],
-    tech: ['TypeScript', 'Node.js', 'React', 'Docker', 'WebSocket', 'Redis', 'CRDT', 'YJS'],
-  },
-]
-
-const faqs = [
-  {
-    question: 'What opportunities are you open to?',
-    answer:
-      'Full-time backend engineering roles focused on distributed systems, infrastructure, or developer tooling. Open to remote or Bengaluru-based positions. Not looking for frontend-heavy or management tracks.',
-  },
-  {
-    question: 'What does your ideal role look like?',
-    answer:
-      'A small, focused team working on hard infrastructure problems — Go-first codebase, meaningful system design decisions, and the autonomy to own things end-to-end.',
-  },
-  {
-    question: 'Are you available for consulting?',
-    answer:
-      'Selectively. I take on short-term engagements for backend architecture reviews, reliability audits, or Go mentoring. Reach out and we can see if it\'s a good fit.',
-  },
-  {
-    question: 'What\'s your engineering philosophy?',
-    answer:
-      'Systems should fail gracefully and loudly. I prefer boring, observable, and replaceable over clever. If it can\'t be debugged at 2am, it shouldn\'t be in production.',
-  },
-]
-
-const skills: Record<string, string[]> = {
-  Languages: ['Go', 'TypeScript', 'JavaScript', 'Java', 'Python'],
-  Infrastructure: ['Kubernetes', 'Docker', 'Terraform', 'Helm', 'AWS', 'Azure'],
-  'Data & Messaging': ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Kafka'],
-  Frameworks: ['React.js', 'GraphQL', 'gRPC', 'OpenTelemetry', 'Temporal'],
-}
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -141,17 +34,17 @@ export default function Home() {
           {/* Mobile: photo on left fills space, name on right */}
           <div className="flex items-center gap-4 mb-6 sm:hidden">
             <img
-              src="/photo.png"
-              alt="Kshitiz Agrawal"
+              src={hero.photo}
+              alt={hero.photoAlt}
               className="flex-1 min-w-0 rounded-xl object-cover object-center"
             />
             <div className="flex flex-col justify-center gap-2 shrink-0">
               <div className="inline-flex items-center gap-2 skill-pill text-xs font-mono text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-                Backend Engineer · FinBox
+                {hero.role} · {hero.company}
               </div>
               <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-stone-900 via-emerald-700 to-stone-900 dark:from-zinc-50 dark:via-emerald-300 dark:to-zinc-100 bg-clip-text text-transparent [background-size:200%_100%] animate-gradient-shift">
-                Kshitiz Agrawal
+                {hero.name}
               </h1>
             </div>
           </div>
@@ -159,24 +52,23 @@ export default function Home() {
           {/* Desktop: large photo left, full text right */}
           <div className="hidden sm:flex items-center gap-6">
             <img
-              src="/photo.png"
-              alt="Kshitiz Agrawal"
+              src={hero.photo}
+              alt={hero.photoAlt}
               className="w-64 h-64 rounded-2xl object-cover shrink-0"
             />
             <div className="flex-1 min-w-0">
               <div className="inline-flex items-center gap-2 skill-pill text-xs font-mono text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-                Backend Engineer · FinBox
+                {hero.role} · {hero.company}
               </div>
               <h1 className="text-4xl font-bold mb-3 tracking-tight bg-gradient-to-r from-stone-900 via-emerald-700 to-stone-900 dark:from-zinc-50 dark:via-emerald-300 dark:to-zinc-100 bg-clip-text text-transparent [background-size:200%_100%] animate-gradient-shift">
-                Kshitiz Agrawal
+                {hero.name}
               </h1>
               <p className="text-sm font-mono text-stone-400 dark:text-zinc-600 mb-6 tracking-wide">
-                Backend engineer · Distributed systems · Bengaluru, India
+                {hero.subtitle}
               </p>
               <p className="text-stone-600 dark:text-zinc-400 leading-relaxed mb-8 text-sm border-l-2 border-emerald-600/30 dark:border-emerald-500/25 pl-4">
-                Building reliable infrastructure at FinBox — internal proxies, workflow engines, webhook
-                platforms. Interested in how systems fail and how to make them not.
+                {hero.bio}
               </p>
             </div>
           </div>
@@ -184,19 +76,14 @@ export default function Home() {
           {/* Mobile-only: subtitle + bio */}
           <div className="sm:hidden">
             <p className="text-sm font-mono text-stone-400 dark:text-zinc-600 mb-6 tracking-wide">
-              Backend engineer · Distributed systems · Bengaluru, India
+              {hero.subtitle}
             </p>
             <p className="text-stone-600 dark:text-zinc-400 leading-relaxed mb-8 text-sm border-l-2 border-emerald-600/30 dark:border-emerald-500/25 pl-4">
-              Building reliable infrastructure at FinBox — internal proxies, workflow engines, webhook
-              platforms. Interested in how systems fail and how to make them not.
+              {hero.bio}
             </p>
           </div>
           <div className="flex items-stretch divide-x divide-stone-200 dark:divide-zinc-800 mb-8">
-            {[
-              { value: '2+', label: 'years at FinBox' },
-              { value: 'Go', label: 'primary language' },
-              { value: 'BLR', label: 'Bengaluru, India' },
-            ].map(({ value, label }) => (
+            {hero.stats.map(({ value, label }) => (
               <div key={label} className="flex flex-col px-5 first:pl-0 last:pr-0">
                 <span className="text-xl font-bold text-stone-800 dark:text-zinc-100">{value}</span>
                 <span className="text-xs text-stone-400 dark:text-zinc-600 mt-0.5">{label}</span>
@@ -204,12 +91,7 @@ export default function Home() {
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            {[
-              { label: 'GitHub', href: 'https://github.com/Kshitiz1403', external: true },
-              { label: 'LinkedIn', href: 'https://linkedin.com/in/kshitizagrawal', external: true },
-              { label: 'Email', href: 'mailto:kshitizagrawal@outlook.com', external: false },
-              { label: 'Resume', href: '/resume', external: false },
-            ].map(({ label, href, external }) => (
+            {hero.contactLinks.map(({ label, href, external }) => (
               <a
                 key={label}
                 href={href}
@@ -221,7 +103,7 @@ export default function Home() {
               </a>
             ))}
             <a
-              href="https://cal.com/kshitizagrawal"
+              href={hero.calLink}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => posthog.capture('book_call_clicked')}
