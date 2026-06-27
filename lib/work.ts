@@ -25,3 +25,7 @@ export function getAllWorkSlugs(): string[] {
     .filter((f) => f.endsWith('.mdx'))
     .map((f) => f.replace('.mdx', ''))
 }
+
+export function getAllWork(): { slug: string; meta: WorkMeta }[] {
+  return getAllWorkSlugs().map((slug) => ({ slug, meta: getWork(slug).meta }))
+}
