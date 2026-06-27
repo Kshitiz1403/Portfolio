@@ -1,6 +1,8 @@
-import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { getPostHogClient } from '@/lib/posthog-server'
+import { readFile } from 'fs/promises'
+import path from 'path'
+import config from '@/site.config'
 
 export async function GET() {
   try {
@@ -19,8 +21,16 @@ export async function GET() {
       properties: { source: 'resume_route' },
     })
   } catch {
-    // Non-critical — proceed with redirect even if tracking fails
+    // Non-critical — proceed with serving even if tracking fails
   }
 
-  redirect('/resume.pdf')
+  const filePath = path.join(process.cwd(), 'public', 'resume.pdf')
+  const fileBuffer = await readFile(filePath)
+
+  return new Response(fileBuffer, {
+    headers: {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `inline; filename="${config.site.name}.pdf"`,
+    },
+  })
 }
