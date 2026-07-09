@@ -133,6 +133,7 @@ const config = {
     ],
     contactLinks: [
       { label: 'GitHub', href: 'https://github.com/Kshitiz1403', external: true },
+      { label: 'Twitter', href: 'https://x.com/kshitiz_nochill', external: true },
       { label: 'LinkedIn', href: 'https://linkedin.com/in/kshitizagrawal', external: true },
       { label: 'Email', href: 'mailto:kshitizagrawal@outlook.com', external: false },
       { label: 'Resume', href: '/resume', external: false },
@@ -151,6 +152,7 @@ const config = {
   footer: {
     socialLinks: [
       { label: 'GitHub', href: 'https://github.com/Kshitiz1403' },
+      { label: 'Twitter', href: 'https://x.com/kshitiz_nochill' },
       { label: 'LinkedIn', href: 'https://linkedin.com/in/kshitizagrawal' },
       { label: 'Email', href: 'mailto:kshitizagrawal@outlook.com' },
     ],
