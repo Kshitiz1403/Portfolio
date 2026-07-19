@@ -16,6 +16,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
       title: `${meta.title} — ${config.site.name}`,
       description: meta.description,
+      openGraph: {
+        title: meta.title,
+        description: meta.description,
+        type: 'article',
+        url: `${config.site.url}/work/${slug}`,
+      },
     }
   } catch {
     return {}
