@@ -1,14 +1,9 @@
 import { ImageResponse } from 'next/og'
-import { getWork, getAllWorkSlugs } from '@/lib/work'
+import { getWork } from '@/lib/work'
 import config from '@/site.config'
 
-export const runtime = 'edge'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
-
-export function generateStaticParams() {
-  return getAllWorkSlugs().map((slug) => ({ slug }))
-}
 
 export default function OGImage({ params }: { params: { slug: string } }) {
   const { meta } = getWork(params.slug)
@@ -36,7 +31,7 @@ export default function OGImage({ params }: { params: { slug: string } }) {
             marginBottom: '24px',
           }}
         >
-          {config.site.url.replace('https://', '')} · work
+          {`${config.site.url.replace('https://', '')} · work`}
         </div>
         <div
           style={{
