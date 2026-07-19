@@ -54,9 +54,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             {meta.tags && meta.tags.length > 0 && (
               <>
                 <span>·</span>
-                <div className="flex gap-2 font-mono">
+                <div className="flex flex-wrap gap-2">
                   {meta.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
+                    <span key={tag} className="font-mono bg-stone-100 dark:bg-zinc-900 px-2 py-0.5 rounded">{tag}</span>
                   ))}
                 </div>
               </>
