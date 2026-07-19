@@ -1,0 +1,84 @@
+---
+title: "Scaling Past Temporal: The Child Workflow Problem"
+date: "2026-07-19"
+description: "How 15 child workflows tanked our sync match rate at 1M+ workflows/day, and why we stopped using Temporal for that part of the system."
+tags: ["Temporal", "Go", "DataDancer", "Serverless Workflow"]
+---
+
+We run a Temporal based workflow orchestration platform that executes over 1M workflows every day.
+
+Temporal has been a great foundation for us. Durable execution, retries, long running workflows, visibility into failures. It solved a lot of hard problems.
+
+But one production issue forced us to rethink how we were using it.
+
+## The setup
+
+One of our workflow types spawned child workflows for a specific use case. Each child performed an independent piece of work and usually finished in about 30 seconds.
+
+Initially every parent workflow created around 7 or 8 child workflows. Everything looked healthy.
+
+Then the product evolved. Some workflows now needed closer to 15 child workflows.
+
+That's when things started breaking.
+
+## What changed
+
+Once we crossed roughly 15 child workflows, our sync match rate started dropping. Tasks spent longer waiting in queues before workers picked them up.
+
+The surprising part was that overall load hadn't changed much.
+
+The number of child workflows had.
+
+We're still building intuition around the exact internal mechanics, but the pattern was obvious. Child workflow fan out has a cost, and once we crossed a certain point that cost became significant enough to show up in production.
+
+## The wrong fix
+
+Our first instinct was the usual one.
+
+1. More workers.
+2. Different task queue settings.
+3. More sticky execution capacity.
+
+But the more we looked at it, the less it felt like an infrastructure problem.
+
+From the caller's point of view, those 15 child workflows were really one unit of work. We had simply modeled them as 15 independent workflow lifecycles.
+
+So instead of tuning Temporal, we questioned the design.
+
+## Replacing child workflows
+
+Fortunately we already had another execution engine.
+
+Our workflows are defined using the [Serverless Workflow Specification](https://serverlessworkflow.io/), and we had built [DataDancer](/work/datadancer), an in memory Go implementation of the same specification for short running workflows.
+
+That meant we didn't need to rewrite any business logic.
+
+We collapsed the 15 child workflows into a single Temporal activity. Inside that activity, DataDancer executed the workflow in memory.
+
+From Temporal's perspective, it was scheduling one activity instead of fifteen child workflows.
+
+The sync match issue disappeared.
+
+## The migration catch
+
+Both engines implemented the same specification, but they handled workflow data differently.
+
+Our Temporal based engine accumulated outputs from every activity into a single data map. Any activity could access values produced several steps earlier.
+
+DataDancer only retained the output of the previous activity.
+
+The fix was a config flag: enabling it switches DataDancer's data map to cumulative mode for that execution context, matching the Temporal-based engine's behavior. 
+
+This let us build an adapter for the migration without changing DataDancer's default semantics for the 4+ other microservices already depending on it.
+
+## Takeaway
+
+This wasn't a story about Temporal being the wrong tool.
+
+Temporal is still an excellent fit for durable, long running workflows.
+
+The real lesson was simpler.
+
+Sharing a specification doesn't guarantee identical behavior. Standards leave gaps, and every implementation fills those gaps differently.
+
+Those differences rarely matter until you try moving from one implementation to another.

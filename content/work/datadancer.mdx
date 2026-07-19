@@ -5,7 +5,7 @@ period: "March 2025 – Present"
 tech: ["Go", "Serverless Workflow", "JQ", "OpenTelemetry"]
 ---
 
-FinBox runs a lot of short-lived data transformation workflows. An event comes in, gets validated, enriched from a few sources, transformed into a target shape, and forwarded downstream. These aren't long-running processes — they complete in milliseconds to seconds.
+We run a lot of short-lived data transformation workflows. An event comes in, gets validated, enriched from a few sources, transformed into a target shape, and forwarded downstream. These aren't long-running processes — they complete in milliseconds to seconds.
 
 The natural instinct is to reach for Temporal. But Temporal is designed for **durable, long-running workflows** that need to survive process restarts. For **short-running in-memory work**, it introduces unnecessary overhead: a separate Temporal server, worker processes, workflow history serialization. For a workflow that runs in 50ms, that infrastructure cost isn't justified.
 
@@ -49,4 +49,4 @@ The spec covers more than DataDancer currently implements — durable execution,
 
 ---
 
-DataDancer is now used across 4+ microservices at FinBox. The consistent pattern — define the workflow in JSON, register the custom activities in Go — makes it easier to understand what a service does without reading imperative code.
+DataDancer is now used across 4+ microservices in production. The consistent pattern — define the workflow in JSON, register the custom activities in Go — makes it easier to understand what a service does without reading imperative code.
