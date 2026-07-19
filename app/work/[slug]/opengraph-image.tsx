@@ -5,8 +5,9 @@ import config from '@/site.config'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function OGImage({ params }: { params: { slug: string } }) {
-  const { meta } = getWork(params.slug)
+export default async function OGImage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const { meta } = getWork(slug)
 
   return new ImageResponse(
     (
