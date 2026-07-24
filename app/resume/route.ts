@@ -6,7 +6,7 @@ import config from '@/site.config'
 
 export async function GET(request: Request) {
   try {
-    const { pathname, search } = new URL(request.url)
+    const { pathname, search, searchParams } = new URL(request.url)
     const cookieStore = await cookies()
     const phCookie = cookieStore.get(`ph_${process.env.NEXT_PUBLIC_POSTHOG_KEY}_posthog`)
     let distinctId = 'anonymous'
@@ -19,7 +19,11 @@ export async function GET(request: Request) {
     await posthog.captureImmediate({
       distinctId,
       event: 'resume_downloaded',
-      properties: { source: 'resume_route', path: pathname + search },
+      properties: {
+        source: 'resume_route',
+        path: pathname + search,
+        utm_source: searchParams.get('utm_source') ?? undefined,
+      },
     })
   } catch {
     // Non-critical — proceed with serving even if tracking fails
