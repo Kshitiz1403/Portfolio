@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     }
 
     const posthog = getPostHogClient()
-    await posthog.captureImmediate({
+    posthog.capture({
       distinctId,
       event: 'resume_downloaded',
       properties: {
