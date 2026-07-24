@@ -96,7 +96,10 @@ export default function Home() {
                 key={label}
                 href={href}
                 {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                onClick={() => posthog.capture('social_link_clicked', { label })}
+                onClick={() => {
+                  posthog.capture('social_link_clicked', { label })
+                  if (href === '/resume') posthog.capture('resume_downloaded', { source: 'homepage_click' })
+                }}
                 className="text-xs font-mono text-stone-500 dark:text-zinc-500 border border-stone-200 dark:border-zinc-800 rounded px-3 py-1.5 hover:border-emerald-600/50 dark:hover:border-emerald-500/40 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all duration-200"
               >
                 {label}
