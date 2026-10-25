@@ -31,11 +31,12 @@ export async function GET(request: Request) {
 
   const filePath = path.join(process.cwd(), 'public', 'resume.pdf')
   const fileBuffer = await readFile(filePath)
+  const fileName = `${config.site.name} ${config.site.jobTitle}`.replace(/\s+/g, '_')
 
   return new Response(fileBuffer, {
     headers: {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `inline; filename="${config.site.name}.pdf"`,
+      'Content-Disposition': `inline; filename="${fileName}.pdf"`,
     },
   })
 }
